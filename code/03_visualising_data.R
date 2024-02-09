@@ -305,14 +305,21 @@ summary(fit_phylm_total_ratio)
 
 ## There's at least an effect of temperature, but this might be because the variables might be correlated, we can try fitting it individually.
 
-
-## PICK UP HERE ### 2024-02-09
-
 # Stepwise model selection
 phylostep(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree,
-             direction = "both", k = 2)
+          direction = "both", k = 2)
 
+## Step wise fitting also indicate temperature provides the best fit. 
 
+fit_vrat_2 <- phylolm(ver_rati ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+fit_vrat_3 <- phylolm(ver_rati ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+fit_vrat_4 <- phylolm(ver_rati ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+fit_vrat_5 <- phylolm(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+
+summary(fit_vrat_2)
+summary(fit_vrat_3)
+summary(fit_vrat_4)
+summary(fit_vrat_5)
 
 # Visualise data
 dev.off()
@@ -326,38 +333,23 @@ abline(fit_vrat_3, lty = 3)
 plot(ver_rati ~ ARID, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
 abline(fit_vrat_4, lty = 3)
 
+# fit_vert_2 <- phylolm(log(tot_vert) ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+# fit_vert_3 <- phylolm(log(tot_vert) ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+# fit_vert_4 <- phylolm(log(tot_vert) ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+# fit_vert_5 <- phylolm(log(tot_vert) ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
+# 
+# sum_vert_2 <- summary(fit_vert_2); sum_vert_3 <- summary(fit_vert_3); sum_vert_4 <- summary(fit_vert_4); sum_vert_5 <- summary(fit_vert_5)
+# 
+# sum_vert_2 
+# sum_vert_3
+# sum_vert_4
+# sum_vert_5
 
+# par(mfrow=c(2,2))
+# plot(tot_vert ~ temp_mean, data = anilios_data)
+# plot(tot_vert ~ mean_bulk, data = anilios_data)
+# plot(tot_vert ~ ARID, data = anilios_data)
 
+## Answer: vertebrae ratio correlate with temperature only, not aridity or soil compactness
 
-
-
-fit_vert_2 <- phylolm(log(tot_vert) ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vert_3 <- phylolm(log(tot_vert) ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vert_4 <- phylolm(log(tot_vert) ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vert_5 <- phylolm(log(tot_vert) ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-
-sum_vert_2 <- summary(fit_vert_2); sum_vert_3 <- summary(fit_vert_3); sum_vert_4 <- summary(fit_vert_4); sum_vert_5 <- summary(fit_vert_5)
-
-sum_vert_2 
-sum_vert_3
-sum_vert_4
-sum_vert_5
-
-par(mfrow=c(2,2))
-plot(tot_vert ~ temp_mean, data = anilios_data)
-plot(tot_vert ~ mean_bulk, data = anilios_data)
-plot(tot_vert ~ ARID, data = anilios_data)
-
-# fit_vrat_2 <- phylolm(ver_rati ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vrat_3 <- phylolm(ver_rati ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vrat_4 <- phylolm(ver_rati ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vrat_5 <- phylolm(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-
-summary(fit_vrat_2)
-summary(fit_vrat_3)
-summary(fit_vrat_4)
-summary(fit_vrat_5)
-
-
-
-
+### PICK UP HERE### 
