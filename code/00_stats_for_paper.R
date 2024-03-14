@@ -76,6 +76,8 @@ mean(table(vert_df$species))
 ## Institution we measured from
 unique(vert_df$institution)
 
+## Number of scans by institution
+table(vert_df$institution)
 
 
 
