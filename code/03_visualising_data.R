@@ -10,6 +10,7 @@
 library(ggplot2)
 # library(dplyr)
 library(phytools); 
+library(geiger);
 library(ape); 
 library(geomorph); 
 # library(geiger)
@@ -75,7 +76,7 @@ dimorph_df <- vert_df[vert_df$sex %in% c('f', 'm') &
 # Vector of species where sample size is at least 3 for males and females
 include_species <- dimorph_df %>% 
   dplyr::group_by(species, sex) %>% 
-  dplyr::summarise(n = n()) %>% 
+  dplyr::summarise(n = dplyr::n()) %>% 
   dplyr::filter(n >= 3) %>% dplyr::distinct(species) %>% 
   dplyr::filter(species %notin% c("Anilios_systenos")) %>%
   c()
@@ -88,7 +89,7 @@ source('code/utility/func_sexual_dimorphism_tester.R')
 d_vert_ratio <- sex_dimorphic_tester("vert_ratio ~ sex + species + sex:species", subset_dimorph)
 d_vert_ratio
 
-## ANSWER: 4/29 species are sexually dimorphic. 
+## ANSWER: 4/29 species are sexually dimorphic in vertebrae/length ratio.
 d_vert_ratio$dimorph_sp
 
 
@@ -169,7 +170,7 @@ vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
-check_data <- name.check(phy = sub_phy, data = vert_data)
+check_data <- geiger::name.check(phy = sub_phy, data = vert_data)
 vert_data <- vert_data[which(rownames(vert_data) %notin% check_data$data_not_tree),]
 
 plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)), 
@@ -185,14 +186,15 @@ plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)),
 
 # Calculate width ratio
 width_ratio_cex <- vert_data$body_ratio*90
-width_ratio_cex <- setNames(obj = width_ratio, rownames(vert_data))
+width_ratio_cex <- setNames(obj = width_ratio_cex, rownames(vert_data))
 
 dev.off()
-plot(mean_total_length ~ mean_tot_vert, cex = width_ratio_cex, data = vert_data, bty="n", pch = 19)
+plot(mean_total_length ~ mean_tot_vert, cex = width_ratio_cex, data = vert_data, bty="n", pch = 19,
+     xlab = "Mean total vertebrae", ylab = "Mean total length (mm)")
+# text(y = vert_data$mean_total_length, x = vert_data$mean_tot_vert, labels = names(width_ratio_cex), pos = 4, adj = 0.5)
 
 ## Figure caption
 ## Size of point is body fineness. We see no clear pattern between mean total length and mean total vert
-
 
 # Question 5 --------------------------------------------------------------
 
@@ -231,6 +233,7 @@ ver_rati_AIC <- fit.phylolm.ev("ver_rati", anilios_data, anilios_tree)
 ## Answer
 ## Early burst model best fit these two traits best, followed by BM and lambda
 
+
 # Question 6 --------------------------------------------------------------
 
 ## Question: Does vertebrae ratio show phylogenetic signal? 
@@ -249,8 +252,6 @@ summary(sig_ver_rati)
 ## Interpretation
 # Trait variation among species is entirely explained by their shared evolutionary history
 
-
-
 # Question 7 --------------------------------------------------------------
 
 ## Question: Does vertebrae ratio correlate with body width ratio? 
@@ -265,10 +266,14 @@ summary(vert.pgls)
 predict(vert.pgls)
 coefficients(vert.pgls)
 dev.off()
-plot(vert_ratio ~ width_ratio, bty="n", cex = width_ratio_cex[names(width_ratio)], pch = 19)
+
+# Plotting subset just Anilios species
+plot(vert_ratio ~ width_ratio, bty="n", cex = width_ratio_cex[names(width_ratio)], pch = 19,
+     xlab = "Body width ratio", ylab = "Vertebrae ratio")
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
-### using phylolm
+
+### using phylolm to fit this regression but using different evolutionary models
 fit_width_EB <- phylolm(ver_rati ~ width_ratio, data = anilios_data, phy = anilios_tree, measurement_error=T, model="EB", lower.bound=-10, upper.bound=10)
 fit_width_BM <- phylolm(ver_rati ~ width_ratio, data = anilios_data, phy = anilios_tree, measurement_error=T, model="BM")
 fit_width_LB <- phylolm(ver_rati ~ width_ratio, data = anilios_data, phy = anilios_tree, model="lambda")
@@ -281,10 +286,11 @@ summary(fit_width_LB)
 ## There is a statistically significant correlation between vertebrae ratio and fineness of the body. 
 ## Species that have more vertebrae per length (vertebrae ratio > 1) are usually more fine, whereas more robust species
 ## have lower number of vertebrae. From phylolm, when fitted with EB or BM/Lambda, still show significant effect of width_ratio.
+## Our BM model had the lowest AIC score.
 
 ## Possible explanation: 
 ## This could be that these species need more vertebrae to fit through crevices 
-## in hard soil? More robust species are found in softer soil (from blindsnakemorpho project)
+## in hard soil? More robust species are found in softer soil (from blindsnakemorpho project). Or building larger vertebrae?
 
 
 # Question 8 --------------------------------------------------------------
@@ -295,7 +301,7 @@ summary(fit_width_LB)
 # aridity index, 
 # soil compactness.
 
-# Total vertebrae  -- no effect
+# Total vertebrae  -- full model - no effect
 fit_phylm_total_vert <- phylolm(tot_vert ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
 summary(fit_phylm_total_vert)
 
@@ -306,8 +312,7 @@ summary(fit_phylm_total_ratio)
 ## There's at least an effect of temperature, but this might be because the variables might be correlated, we can try fitting it individually.
 
 # Stepwise model selection
-phylostep(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree,
-          direction = "both", k = 2)
+phylostep(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, direction = "both", k = 2)
 
 ## Step wise fitting also indicate temperature provides the best fit. 
 
