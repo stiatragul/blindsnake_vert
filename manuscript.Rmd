@@ -1,0 +1,126 @@
+---
+title: ""
+date: "`r Sys.Date()`"
+author: ""
+output: 
+  # bookdown::html_document2:
+  #   toc: true
+  #   number_sections: FALSE
+  bookdown::word_document2:
+    reference_docx: [./custom-reference-doc.docx]
+    number_sections: false
+    fig_caption: yes
+bibliography: [C:/Users/ST/Documents/repo/anu_thesis_texts/zotero_library.bib]
+csl: evolution.csl
+link-citations: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE,
+                      message=FALSE,
+                      warning=FALSE,
+                      dpi=300)
+# knitr::opts_knit$set(root.dir=normalizePath("..")) #use grandparent folder working directory
+# for including graphics we need full path with knitr
+WD <- getwd()
+```
+
+```{r packages}
+library(dplyr); library(readr); library(janitor); 
+library(ape); library(phytools);
+library(kableExtra)
+```
+
+**Title** TBD
+
+**Authors**: Sarin Tiatragul^1^; Andrew Amey^2^; Scott Hocknull^2^;  Scott Keogh^1^; Emma Sherratt^3^
+
+^1^Division of Ecology & Evolution, Research School of Biology, The Australian National University, Canberra 2601, ACT, Australia 
+^2^Queensland Museum, Hendra, QLD, 4011, Australia
+^3^School of Biological Sciences, The University of Adelaide, Adelaide, SA 5005, Australia
+
+
+**Corresponding author**: Sarin Tiatragul (sarin.tiatragul@anu.edu.au)  
+
+<!-- **Author contributions**:  -->
+Putter: 
+
+<!-- ST and ES conceptualised the study; ST collected morphology data;  -->
+<!-- ST obtained X-rays from SAM, WAM, and MAGNT. SH and AM provided X-rays Queensland Museum specimens. -->
+<!-- ST and ES analysed the data; ST prepared the figures; ST, SK and ES wrote the manuscript. -->
+
+<!-- **Acknowledgements (including funding information)**: -->
+
+<!-- We to thank museum curators and collection managers from the  -->
+<!-- South Australian Museum  (R Foster, S Donnellan), Western Australian Museum (P Doughty), Queensland Museum (A Amey and P Couper), Australian National Wildlife Collection (T Haff, C Wilson, and L Joseph), Museum and Art Gallery of the Northern Territory (G Dally), Museums Victoria (J Sumner, J Melville, and R Aguilar), Florida Museum of Natural History (J Gray, CM Sheehy, and ZS Randall), and the Natural History Museum Berlin (K Mahlow and F Tillack).  -->
+<!-- SK thanks the Australian Research Council for ongoing support. ST PhD scholarship is supported by the Australian Government Research Training Program Scholarship at the Australian National University.  -->
+
+**Conflict of Interest statement**
+The authors declare no Conflict of Interest.
+
+**Data Availability Statement**
+Upon acceptance, associated data will be archived on Zenodo/Dryad.
+
+\newpage
+
+#Abstract
+
+\newpage
+
+# Introduction
+
+# Material and Methods
+
+## Sampling
+
+We examined 341 specimens representing 44 lineages *Anilios* blindsnakes including 42/47 formally described species [@uetzQuarter2021]. Our sample size per species ranged from 1 to 25 specimens (median=7 specimens). We sourced specimens from South Australian Museum (SAMA), Western Australian Museum (WAM), Queensland Museum (QM), Museum and Art Gallery of the Northern Territory (MAGNT), and a private collection. Where possible, we chose relatively large non-fragile specimens from both males and females with well-preserved heads for X-ray. Sex for each specimen were determined by inspecting the gonads, or assigned based on relative tail lengths folowing (Tiatragul et al. unpublished). 
+
+## Phylogeny
+We extracted 37 lineages of Australian blindsnakes from the time-calibrated phylogeny of Australian blindsnakes and outgroups presented in [@tiatragulAustralia2023]. The subset phylogeny represents 35/47 formally described species of _Anilios_ along with two additional genetically distinct lineages: one eastern population of "_A. grypus_" and one eastern population of "_A. ligatus_" [@tiatragulAustralia2023]. This phylogeny was inferred using the shortcut coalescent method in ASTRAL III [@zhangASTRALIIIPolynomialTime2018] based on 4930 maximum likelihood gene trees estimated using IQTREE [@minhIQTREE2020]. Divergence dating was estimated using MCMCTree from the PAML package [@yangPAML2007] based on 27 squamate reptile fossil calibrations [@tiatragulAustralia2023]. 
+
+## Morphological data 
+
+We collected body size measurements and vertebral counts from museum specimens examined. To quantify body size and body width ratios, we measured snout-to-vent length (SVL), tail lengths (TL) and midbody diameter (MBD). We measured SVL and TL by stretching the specimen along a ruler to the nearest 0.5 mm. For MBD, we used a digital vernier calliper (ABS Coolant Proof Caliper, Mitutoyo, Japan) to the nearest 0.1 mm. Total body length (TBL) is the sum of SVL + TL. 
+<!-- To obtain  mean body shape ratios [@mosimannSize1970] for each species, we divided each MBD by SVL and log-transformed for further analyses. -->
+
+To obtain vertebral counts, we X-ray scanned the specimens at various institutions including: LX-60 (Faxitron, IL, USA) at the University of Adelaide Faculty of Health and Medical Sciences (n = 87), Thermo Kevex PXS5-927EA Microfocus source (Waltham, MA, USA) with a LTX-1717 Digital Flat Panel Detector (Kodex Inc, NJ, USA) at the Western Australian Museum (n = 129), HeliScan MicroCT system at the National Laboratory for X-Ray Micro Computed Tomography (CTLab) based at the Australian National University (ANU) (n = 90), and Queensland X-Ray (n = 35). 
+
+<!-- Resolution for ANU CTLab is calculated by lenth / pixel * 1000 -->
+
+We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Precloacal and postcloacal vertebrae were distinguished based on vertebral morphology. 
+
+Additionally, we quantified the vertebral profile for two representative blindsnake species (*A. grypus* and *A. ligatus*) by measuring the length of each vertebra from the first pre-cloacl vertebra to the last tail vertebra. Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 where landmarks were placed medially along the vertebral column at the anterior limit of the centrum of each vertebra. 
+
+## PICK UP HERE $*)#$@
+
+
+
+## Environmental data 
+
+Occurrence data were based on locality records of preserved specimens from museum databases and verified human observations from Atlas of the Living Australia (ALA). We modified some records to reflect the latest taxonomic changes based on updated distribution range and ST's examination of specimens. We discarded records with identical latitude and longitude, and records with uncertain taxonomic identities. In total we retained 3896 verified records representing every species of Australian *Anilios* for our analyses (See data availability statement).
+
+We selected soil bulk density, annual mean temperature, and aridity index as the most biologically relevant data to describe blindsnake niches. 
+Soil bulk density measures the penetrability of soil, which is relevant for strictly fossorial reptiles [camaitiMacroecological2022]. Bulk density is calculated by taking the weight of dry soil divided by the total soil volume (g/cm<sup>3</sup>). Values > 1.6 g/cm<sup>3</sup> tend to restrict root growth, while loose soil have densities < 0.5 g/cm<sup>3</sup> [@mckenzieSoil2002]. Mean annual temperature serves as a climate proxy and is commonly used to describe niche for squamate reptiles [@coxEvolutionary2015;@pieEvolution2017;@wiensDiversity2013]. Finally, aridity index reflects precipitation availability over atmospheric water demand and is categorised as follows: hyper arid, < 0.03; arid, 0.03 – 0.2; semi-arid, 0.2-0.5; dry sub-humid, 0.5 – 0.65; humid, >0.65 [@zomerVersion2022]. 
+From raster files that contained modelled approximations at the resolution of 3 arc-seconds, we extracted soil bulk density values between 0 — 5cm depth from [CSIRO Soil and Landscape Grid of Australia](https://www.clw.csiro.au/aclep/soilandlandscapegrid/index.html), mean annual temperature from WorldClim v.2 [@fickWorldClim2017], and aridity index from @zomerVersion2022 for each georeferenced record using the "extract" function in the R package `raster` v.3.6-3 [@hijmansRaster2022]. We then calculated the maximum soil bulk density, mean annual temperature, and mean aridity index for each species. Correlation analyses revealed that none of the background environmental variables were strongly correlated (Pearson's *r* < |0.75|). 
+
+
+
+#### Statistical analyses
+
+Phylogenetic generalised least squares (PGLS). Body size as dependent variable regressed onto independent vertebral counts. Use 
+
+Use partial least squares to test correlation between body width and vertebrae ratio. 
+
+
+
+
+# Discussion
+
+
+
+
+
+## Miscellaneous 
+Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. 
