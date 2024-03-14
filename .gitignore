@@ -55,4 +55,8 @@ rsconnect/
 output/
 
 
-.Rproj
+*.Rproj
+
+*.xlsx
+
+*.zip
