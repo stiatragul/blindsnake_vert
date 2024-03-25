@@ -60,3 +60,7 @@ output/
 *.xlsx
 
 *.zip
+
+snake_vert_prac/
+
+*.dcm
