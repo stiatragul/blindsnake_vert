@@ -19,8 +19,15 @@ lig1 <- read.csv("data/x_ray/lig_R00050_ST_1.csv", header=TRUE, row.names = 1)[,
 lig2 <- read.csv("data/x_ray/lig_R00050_ST_2.csv", header=TRUE, row.names = 1)[,(c("X", "Y"))] 
 lig3 <- read.csv("data/x_ray/lig_R00050_ST_3.csv", header=TRUE, row.names = 1)[,(c("X", "Y"))] 
 
+
+gry1 <- read.csv("data/x_ray/gry_R146673_ST_1.csv", header=TRUE, row.names = 1)[,(c("X", "Y"))] 
+gry2 <- read.csv("data/x_ray/gry_R146673_ST_2.csv", header=TRUE, row.names = 1)[,(c("X", "Y"))] 
+gry3 <- read.csv("data/x_ray/gry_R146673_ST_3.csv", header=TRUE, row.names = 1)[,(c("X", "Y"))] 
+
 # Plot  -------------------------------------------------------------------
 source('code/utility/func_vert_profile_plotter.R')
-vert_profile_plotter(lig1, lig2, lig3, "A. ligatus R00050")
 
-
+par(mfrow=c(1,2))
+vert_raw_plotter(lig1, lig2, lig3, "A. ligatus R00050")
+vert_profile_plotter(lig1, lig2, lig3, "A. ligatus R00050", .error = TRUE)
+vert_profile_plotter(gry1, gry2, gry3, "A. grypus R146673", .error = TRUE)
