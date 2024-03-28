@@ -35,6 +35,8 @@ PC_log <- read.csv('data/script_generated_data/log_body_shape_ratio_pc_all.csv')
 
 # Full individual data
 linear_df <- read.csv('data/script_generated_data/blindsnake_body_traits.csv')
+linear_df <- linear_df[linear_df$reg_no %notin% c("R.8515","R.127956"),] ### Dropped these samples because mis-id as troglodytes but in Queensland. Probably torresianus or broomi
+
 
 # Summary data
 anilios_data <- read.csv(file = 'data/script_generated_data/anilios_summary_data.csv', row.names = 1)
@@ -49,6 +51,7 @@ anilios_tree$tip.label
 genus_species <- paste(linear_df$genus, linear_df$species, sep = "_")
 linear_df$species <- genus_species
 
+
 # Check vertebrae by length -----------------------------------------------
 
 # Filter out rows with NA or 0 values in precloacal_vert
@@ -62,6 +65,68 @@ plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #
 
 # No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae and others that shorten their vertebrae relative to the mean. 
 
+
+# Total number of vertebrae -----------------------------------------------
+
+source('code/utility/func_plotTreeboxplot.R')
+
+# Total number of vertebrae
+total_vertebrae <- setNames(vert_df$total_vert, nm = vert_df$species)
+total_vertebrae <- total_vertebrae[which(names(total_vertebrae) %in% sub_phy$tip.label)]
+geiger::name.check(phy = sub_phy, data = total_vertebrae)
+spp<-factor(names(total_vertebrae),untangle(ladderize(sub_phy),"read.tree")$tip.label)
+
+pdf(file = "output/tree_boxplot_totalVert.pdf", width = 11.7, height = 8.3, paper = "a4r")
+plotTree.boxplot(sub_phy,x=total_vertebrae~spp,
+                 args.boxplot = list(xlab="Total number of vertebrae",
+                                     # ylim=c(20,170),
+                                     col="grey99"))
+dev.off()
+
+summary(vert_df$total_vert)
+vert_df[order(vert_df$total_vert), c("species", "total_vert")]
+
+## Summary SE for species
+Vertebra_summary_table <- vert_df %>% 
+  dplyr::group_by(species) %>% 
+  summarise(mean_vert = mean(total_vert),
+            max_vert = max(total_vert),
+            min_vert = min(total_vert),
+            median_vert = median(total_vert),
+            mean_preclo = mean(precloacal_vert),
+            max_preclo = max(precloacal_vert),
+            min_preclo = min(precloacal_vert),
+            median_preclo = median(precloacal_vert),
+            )
+
+write.csv(Vertebra_summary_table, file = "assets/tables/vertebra_summary.csv", row.names = FALSE)
+
+Vertebra_summary_table_by_sex <- vert_df %>% 
+  dplyr::group_by(species, sex) %>% 
+  dplyr::filter(sex %in% c("f","m")) %>% 
+  summarise(sample_size = n(),
+            mean_vert = mean(total_vert),
+            max_vert = max(total_vert),
+            min_vert = min(total_vert),
+            median_vert = median(total_vert),
+            mean_preclo = mean(precloacal_vert),
+            max_preclo = max(precloacal_vert),
+            min_preclo = min(precloacal_vert),
+            median_preclo = median(precloacal_vert),
+            mean_postclo = mean(postcloacal_vert),
+            max_postclo = max(postcloacal_vert),
+            min_postclo = min(postcloacal_vert),
+            median_postclo = median(postcloacal_vert),
+            )
+
+Vertebra_summary_table_by_sex
+
+
+# Pleomerism --------------------------------------------------------------
+
+
+
+
 # Q1 Test for sexual dimorphism ----------------------------------------------
 
 ## Question: Which species show sexual dimorphism in vert/length ratio?
@@ -74,23 +139,32 @@ dimorph_df <- vert_df[vert_df$sex %in% c('f', 'm') &
                                                 'Anilios chamodracaena'), ]
 
 # Vector of species where sample size is at least 3 for males and females
-include_species <- dimorph_df %>% 
+exclude_species <- dimorph_df %>% 
   dplyr::group_by(species, sex) %>% 
   dplyr::summarise(n = dplyr::n()) %>% 
-  dplyr::filter(n >= 3) %>% dplyr::distinct(species) %>% 
+  dplyr::filter(n <= 3) %>% dplyr::distinct(species) %>% 
   dplyr::filter(species %notin% c("Anilios_systenos")) %>%
   c()
 
 # Subset data to test for sexual dimorphism for each trait using only species that have at least 3 males and 3 females
-subset_dimorph <- dimorph_df[dimorph_df$species %in% include_species$species,]
+subset_dimorph <- dimorph_df[dimorph_df$species %notin% exclude_species$species,]
 
 # Fit linear models and check which species have sexual dimorphism
 source('code/utility/func_sexual_dimorphism_tester.R')
 d_vert_ratio <- sex_dimorphic_tester("vert_ratio ~ sex + species + sex:species", subset_dimorph)
 d_vert_ratio
 
-## ANSWER: 4/29 species are sexually dimorphic in vertebrae/length ratio.
+## ANSWER: 3/14 species are sexually dimorphic in vertebrae/length ratio.
 d_vert_ratio$dimorph_sp
+
+
+postcloacal_dimorph <- sex_dimorphic_tester("postcloacal_vert ~ sex + species + sex:species", subset_dimorph)
+postcloacal_dimorph$dimorph_sp
+postcloacal_dimorph$table
+
+precloacal_dimorph <- sex_dimorphic_tester("precloacal_vert ~ sex + species + sex:species", subset_dimorph)
+precloacal_dimorph$dimorph_sp
+precloacal_dimorph$table
 
 
 # QUESTION 2 --------------------------------------------------------------
@@ -172,6 +246,7 @@ vert_df
 
 vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
+# Calculating vertebrae number to length ratio
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
 check_data <- geiger::name.check(phy = sub_phy, data = vert_data)
@@ -180,25 +255,25 @@ vert_data <- vert_data[which(rownames(vert_data) %notin% check_data$data_not_tre
 plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)), 
                  args.barplot=list(xlab="Vertebrae/Length ratio"))
 
+
 # Aspect ratio as boxplot
 aspect_v <- setNames(vert_df$total_length / vert_df$midbody_diameter, nm = vert_df$species)
-unique(names(aspect_v))
 aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
-unique(names(aspect_v))
 
 geiger::name.check(phy = sub_phy, data = aspect_v)
 spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
 
-spp
-
-dev.off()
-source('code/utility/func_plotTreeboxplot.R')
 
 ## This is using old code where we can't adjust the ylim
+
+pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 11.7, height = 8.3, paper = "a4r")
 plotTree.boxplot(sub_phy,x=aspect_v~spp,
                  args.boxplot = list(xlab="Aspect ratio (total length/body width",
                                      # ylim=c(20,170),
                                      col="grey99"))
+dev.off()
+
+
 
 plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
                  args.boxplot = list(xlab="Aspect ratio (total length/body width"))
@@ -295,14 +370,17 @@ predict(vert.pgls)
 coefficients(vert.pgls)
 dev.off()
 
+sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = names(width_ratio))
+
 # Plotting subset just Anilios species
 plot(vert_ratio ~ width_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
      xlab = "Body width ratio", ylab = "Vertebrae ratio")
-text(x = width_ratio, y = vert_ratio, labels = names(width_ratio))
+text(x = width_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
+# plot(anilios_data$tot_vert ~ anilios_data$mean_width)
 
 ### using phylolm to fit this regression but using different evolutionary models
 fit_width_EB <- phylolm(ver_rati ~ width_ratio, data = anilios_data, phy = anilios_tree, measurement_error=T, model="EB", lower.bound=-10, upper.bound=10)
