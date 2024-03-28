@@ -71,6 +71,30 @@ Upon acceptance, associated data will be archived on Zenodo/Dryad.
 
 # Introduction
 
+
+Blindsnakes are 
+
+
+
+Scolecophidians comprise XXX species of snakes with highly specialised phenotypes for a strictly fossorial life-style [@mirallesMolecular2018].
+
+Although all blindsnakes are fossorial, body size and shape vary significantly among species (Tiatragul et al. unpublished; @shineNatural1990;@webbPreysize1993;@webbDietary2001;@ehmannFamily1993). Leptophlopids are generally thought to be more narrow and long compared to typhlopids, which are wider and more robust for a given snout-vent length [@herrelBurrowing2021]. These differences in body size and proportions determine how much push force the snakes can generate when burrowing. 
+
+Their morphological differences led to the idea that leptyphlopids generally use existing burrows while typhlopids create their own burrow. 
+
+Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relative short tails of blindsnakes (CITE). 
+
+The Australian blindsnake radiation comprise 47 described species [@tiatragulAustralia2023] with exceptionally diverse morphology from slender (aspect ratio = ) to robust. Body proportion exhibit strong phylogenetic signal but in some instances spread out across the phylogeny (CITE). 
+
+In this study, we investigate the interspecific variation in the number of pre- and post-cloacal vertebrae to test the hypothesis that changes in developmental patterns underpin the evolution of different body proportions in Australian typhlopid snakes. 
+
+Specifically, we test two predictions:
+(1) narrow-and-long species develop from postnatal ontogenetic changes where vertebral numbers are not significantly different between narrow-and-long species compared to wide-and-robust species; but are elongated. 
+
+(2) Narrow-and-long blindsnakes develop via changes in the embryonic and postnatal stages where narrow-and-long species have greater number of vertebrae than wide-and-robust species. 
+
+To test these predictions, we quantified the number of pre- and post-clocal vertebra across 37 species of Australian blindsnakes. 
+
 # Material and Methods
 
 ## Sampling
@@ -85,31 +109,66 @@ We extracted 37 lineages of Australian blindsnakes from the time-calibrated phyl
 We collected body size measurements and vertebral counts from museum specimens examined. To quantify body size and body width ratios, we measured snout-to-vent length (SVL), tail lengths (TL) and midbody diameter (MBD). We measured SVL and TL by stretching the specimen along a ruler to the nearest 0.5 mm. For MBD, we used a digital vernier calliper (ABS Coolant Proof Caliper, Mitutoyo, Japan) to the nearest 0.1 mm. Total body length (TBL) is the sum of SVL + TL. 
 <!-- To obtain  mean body shape ratios [@mosimannSize1970] for each species, we divided each MBD by SVL and log-transformed for further analyses. -->
 
-To obtain vertebral counts, we X-ray scanned the specimens at various institutions including: LX-60 (Faxitron, IL, USA) at the University of Adelaide Faculty of Health and Medical Sciences (n = 87), Thermo Kevex PXS5-927EA Microfocus source (Waltham, MA, USA) with a LTX-1717 Digital Flat Panel Detector (Kodex Inc, NJ, USA) at the Western Australian Museum (n = 129), HeliScan MicroCT system at the National Laboratory for X-Ray Micro Computed Tomography (CTLab) based at the Australian National University (ANU) (n = 90), and Queensland X-Ray (n = 35). 
+To obtain vertebral counts, we X-ray scanned the specimens at various institutions including: LX-60 (Faxitron, IL, USA) at the University of Adelaide Faculty of Health and Medical Sciences (n=87), Thermo Kevex PXS5-927EA Microfocus source (Waltham, MA, USA) with a LTX-1717 Digital Flat Panel Detector (Kodex Inc, NJ, USA) at the Western Australian Museum (n=129), HeliScan MicroCT system at the National Laboratory for X-Ray Micro Computed Tomography (CTLab) based at the Australian National University (ANU) (n=90), and Queensland X-Ray (n=35). 
 
 <!-- Resolution for ANU CTLab is calculated by lenth / pixel * 1000 -->
 
-We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Precloacal and postcloacal vertebrae were distinguished based on vertebral morphology. Additionally, we quantified intracolumnar length of each vertebrae for two representative blindsnake species (*A. grypus* and *A. ligatus*). Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 to place landmarks medially along the vertebral column at the anterior limit of the centrum of each vertebra. We then calculated the inter-landmark distances by applying the Pythagorean theorem between sequential landmark coordinates in R. Measurements were repeated three times to acccount for measurement errors. 
+We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Pre- and post-cloacal vertebrae were distinguished based on vertebral morphology [@szyndlarIllustrated2023]. Additionally, we quantified intracolumnar length of each vertebrae for two representative blindsnake species (*A. grypus* and *A. ligatus*). Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 to place landmarks medially along the vertebral column at the anterior limit of the centrum of each vertebra. We then calculated the inter-landmark distances by applying the Pythagorean theorem between sequential landmark coordinates in R. Measurements were repeated three times to account for measurement errors. 
 
 
-## Environmental data 
-
+<!-- ## Environmental data  -->
 <!-- NEED TO PUT IN THE CORRECT VALUES HERE -->
-We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA). A total of XXXX records (min = , median = , max = , median per species) representing XX species of Australian *Anilios* for our analyses.
+<!-- We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA). A total of XXXX records (min = , median = , max = , median per species) representing XX species of Australian *Anilios* for our analyses.
 
-###<!-- PICK UP HERE -->###
 We selected soil bulk density, annual mean temperature, and aridity index as the most biologically relevant data to describe blindsnake niches. 
 Soil bulk density measures the penetrability of soil, which is relevant for strictly fossorial reptiles [camaitiMacroecological2022]. Bulk density is calculated by taking the weight of dry soil divided by the total soil volume (g/cm<sup>3</sup>). Values > 1.6 g/cm<sup>3</sup> tend to restrict root growth, while loose soil have densities < 0.5 g/cm<sup>3</sup> [@mckenzieSoil2002]. Mean annual temperature serves as a climate proxy and is commonly used to describe niche for squamate reptiles [@coxEvolutionary2015;@pieEvolution2017;@wiensDiversity2013]. Finally, aridity index reflects precipitation availability over atmospheric water demand and is categorised as follows: hyper arid, < 0.03; arid, 0.03 – 0.2; semi-arid, 0.2-0.5; dry sub-humid, 0.5 – 0.65; humid, >0.65 [@zomerVersion2022]. 
 From raster files that contained modelled approximations at the resolution of 3 arc-seconds, we extracted soil bulk density values between 0 — 5cm depth from [CSIRO Soil and Landscape Grid of Australia](https://www.clw.csiro.au/aclep/soilandlandscapegrid/index.html), mean annual temperature from WorldClim v.2 [@fickWorldClim2017], and aridity index from @zomerVersion2022 for each georeferenced record using the "extract" function in the R package `raster` v.3.6-3 [@hijmansRaster2022]. We then calculated the maximum soil bulk density, mean annual temperature, and mean aridity index for each species. Correlation analyses revealed that none of the background environmental variables were strongly correlated (Pearson's *r* < |0.75|). 
-
-
-
+ -->
 #### Statistical analyses
 
-Phylogenetic generalised least squares (PGLS). Body size as dependent variable regressed onto independent vertebral counts. Use 
+All statistical analyses were performed in R v.4.31 [@rcoreteamLanguage2023]. To test for evolutionary correlations between the number of vertebrae and body size and proportions, we used phylogenetic generalised least squares (PGLS) regression under a model of Browninan motion implemented in `geomorph` v.4.0.6 [@adamsGeomorph2023]. First, we tested for pleomerism [@lindseyPleomerism1975] across 37 species of *Anilios* blindsnakes. 
+We did this by testing whether the total number of vertebrae positively correlate with body size when regressing the maximum number of total vertebrae against maximum SVL from Tiatragul et al. (unpublished). Then, we test whether the total vertebrae number to total body length ratio correlates with body shape, defined as the ratio between midbody diameter divided by SVL, also from Tiatragul et al. (unpublished) data. 
 
-Use partial least squares to test correlation between body width and vertebrae ratio. 
+# Results
 
+Total number of vertebrae varies among the 39 species of Australo-Papuan blindsnakes in this study (Fig. \@ref(fig:fig-variation-totalvert)), ranging from 146 in *A. tovelli* to 400 in *A. grypus* ($$Table 1$$). 
+
+We found no relationship between indicating maximum number of total vertebrae and maximum SVL (PGLS, slope = -0.08, y=225, R^2^=0.02, F=0.9, Z=0.40, P=0.361), indicating an absence of pleomerism in Australian blindsnakes. 
+
+Vertebrae ratio is negatively correlated with body width ratio (PGLS, slope = -21.4, y=1.4, R^2^=0.2, F=8.8,, Z=2.3, P=0.007), indicating that species that are more narrow-and-wide usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-width-ratios)). 
+
+```{r fig-variation-totalvert, fig.cap= 'Interspecific variation in total number of vertebrae among Australo-Papuan blindsnake and close relatives. The boxplot represent the distribution of the data, with vertical inside representing the median. The extent of the box represent the lower (left) and upper (right) quartile, with the whiskers showing 1.5 times the interquartile range. Outliers beyond this range are depicted as individual points.', out.width="165mm", out.height= "126mm"}
+
+knitr::include_graphics(paste0(WD, '/assets/figures/tree-boxplot-totalVert.jpg'))
+```
+
+
+<!-- Figure 2: Pleomerism and ratio correlations -->
+```{r fig-vert-width-ratios, fig.cap= 'Relationship between mean vertebrae ratio and mean body width ratio among Australian blindsnakes. Vertebrae ratio is calculated by total vertebrae/total length, and body width ratio is midbody diameter/total body length.', out.width="165mm", out.height= "126mm"}
+
+knitr::include_graphics(paste0(WD, '/assets/figures/vert-width-ratios.jpg'))
+```
+
+
+
+
+
+<!-- ### Variation in vertebrae number -->
+
+
+
+
+Closely related species tend to have similar number of total vertebrae. 
+Males tend to have greater number of postcloacal vertebrae 
+
+
+
+<!-- FIGURE 1 -->
+
+
+
+
+There is a statistically significant correlation between vertebrae ratio and fineness of the body. Species that have more vertebrae per length (vertebrae ratio > 1) are usually more fine, whereas more robust species have lower number of vertebrae. 
 
 
 
