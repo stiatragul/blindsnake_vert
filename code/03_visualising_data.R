@@ -52,7 +52,7 @@ linear_df$species <- genus_species
 # Check vertebrae by length -----------------------------------------------
 
 # Filter out rows with NA or 0 values in precloacal_vert
-vert_df <- linear_df[!is.na(linear_df$precloacal_vert) & linear_df$precloacal_vert != 0, ]
+vert_df <- linear_df[!is.na(linear_df$precloacal_vert) & linear_df$precloacal_vert != 0 & linear_df$reg_no != "R152714", ]
 
 # Calculate total vertical length and vertical ratio
 vert_df$total_vert <- vert_df$precloacal_vert + vert_df$postcloacal_vert
@@ -97,7 +97,7 @@ d_vert_ratio$dimorph_sp
 
 ## Question: How does number of vertebrae vary with total body length by species and sex
 
-filtered_vert_df <- vert_df %>% dplyr::group_by(species) %>% dplyr::filter(n() > 4, sex %in% c("f","m")) 
+filtered_vert_df <- vert_df %>% dplyr::group_by(species) %>% dplyr::filter(n() > 4, sex %in% c("f","m"), reg_no != "R152714") 
 
 ggplot(filtered_vert_df, aes(x = total_vert, y = total_length, colour = sex)) +
   geom_point() + 
@@ -164,8 +164,12 @@ vert_data <- vert_df %>% dplyr::group_by(species) %>%
                    mean_preclo = mean(precloacal_vert),
                    mean_post = mean(postcloacal_vert),
                    mean_tot_vert = mean(precloacal_vert + postcloacal_vert),
-                   body_ratio = mean(midbody_diameter/svl))
+                   body_ratio = mean(midbody_diameter/svl),
+                   aspect = mean(total_length/midbody_diameter))
+
+
 vert_df
+
 vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
@@ -175,6 +179,30 @@ vert_data <- vert_data[which(rownames(vert_data) %notin% check_data$data_not_tre
 
 plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)), 
                  args.barplot=list(xlab="Vertebrae/Length ratio"))
+
+# Aspect ratio as boxplot
+aspect_v <- setNames(vert_df$total_length / vert_df$midbody_diameter, nm = vert_df$species)
+unique(names(aspect_v))
+aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
+unique(names(aspect_v))
+
+geiger::name.check(phy = sub_phy, data = aspect_v)
+spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
+
+spp
+
+dev.off()
+source('code/utility/func_plotTreeboxplot.R')
+
+## This is using old code where we can't adjust the ylim
+plotTree.boxplot(sub_phy,x=aspect_v~spp,
+                 args.boxplot = list(xlab="Aspect ratio (total length/body width",
+                                     # ylim=c(20,170),
+                                     col="grey99"))
+
+plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
+                 args.boxplot = list(xlab="Aspect ratio (total length/body width"))
+
 
 ## Answer 
 ## There's variation across the phylogeny. As seen in plotTree.barplot.
@@ -268,8 +296,11 @@ coefficients(vert.pgls)
 dev.off()
 
 # Plotting subset just Anilios species
-plot(vert_ratio ~ width_ratio, bty="n", cex = width_ratio_cex[names(width_ratio)], pch = 19,
+plot(vert_ratio ~ width_ratio, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
+     pch = 19,
      xlab = "Body width ratio", ylab = "Vertebrae ratio")
+text(x = width_ratio, y = vert_ratio, labels = names(width_ratio))
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
 
