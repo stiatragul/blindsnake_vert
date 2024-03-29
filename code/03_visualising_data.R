@@ -59,7 +59,7 @@ vert_df <- linear_df[!is.na(linear_df$precloacal_vert) & linear_df$precloacal_ve
 
 # Calculate total vertical length and vertical ratio
 vert_df$total_vert <- vert_df$precloacal_vert + vert_df$postcloacal_vert
-vert_df$vert_ratio <- vert_df$total_vert / vert_df$svl
+vert_df$vert_ratio <- vert_df$total_vert / vert_df$total_length
 
 plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #", ylab = "Total length (mm)", bty = "n")
 
@@ -120,12 +120,6 @@ Vertebra_summary_table_by_sex <- vert_df %>%
             )
 
 Vertebra_summary_table_by_sex
-
-
-# Pleomerism --------------------------------------------------------------
-
-
-
 
 # Q1 Test for sexual dimorphism ----------------------------------------------
 
@@ -238,8 +232,12 @@ vert_data <- vert_df %>% dplyr::group_by(species) %>%
                    mean_preclo = mean(precloacal_vert),
                    mean_post = mean(postcloacal_vert),
                    mean_tot_vert = mean(precloacal_vert + postcloacal_vert),
-                   body_ratio = mean(midbody_diameter/svl),
-                   aspect = mean(total_length/midbody_diameter))
+                   body_ratio = mean(midbody_diameter/total_length),
+                   aspect = mean(total_length/midbody_diameter),
+                   max_total_vert = max(total_vert),
+                   max_preclo = max(precloacal_vert),
+                   max_svl = max(svl),
+                   max_tbl = max(total_length))
 
 
 vert_df
@@ -309,7 +307,7 @@ anilios_data <- anilios_data[rownames(anilios_vert), ]
 anilios_data$pre_cloa <- round(anilios_vert$mean_preclo, 0)
 anilios_data$tot_vert <- anilios_vert$mean_tot_vert
 anilios_data$ver_rati <- anilios_vert$ratio
-anilios_data$width_ratio <- anilios_data$mean_width/anilios_data$svl
+anilios_data$width_ratio <- anilios_data$mean_width/anilios_data
 
 # Fit and compare what evolutionary model fit best
 fit.phylolm.ev <- function(trait, .data, .phy){
@@ -357,30 +355,66 @@ summary(sig_ver_rati)
 
 # Question 7 --------------------------------------------------------------
 
+## Correlation between maximum precloacal vertebrae positively correlates with body size
+
+anilios_data$max_vert <- anilios_vert$max_total_vert
+anilios_data$max_svl <- anilios_vert$max_svl
+
+max_vert <- anilios_data$max_vert; names(max_vert) <- anilios_data$species 
+max_svl <- anilios_data$max_svl; names(max_svl) <- anilios_data$species
+max_tbl <- setNames(anilios_vert$max_tbl, anilios_vert$species)
+
+pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
+summary(pleomerism.pgls)
+coefficients(pleomerism.pgls)
+
+sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species)
+
+plot(max_tbl~max_vert, bty="n", pch = 19,
+     ylab = "Max. total body length (mm)", xlab = "Maximum total vertebrae",
+     xlim=c(150,400), ylim=c(100,700))
+text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
+
+## Including Head & Polly 2007 typhlopid data
+typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
+typh_data
+
+plot(max_tbl~max_vert, bty="n", pch = 19,
+     ylab = "Maximum SVL", xlab = "Maximum total vertebrae", 
+     xlim=c(100,500), ylim=c(100,800))
+points(x = typh_data$max_vert, y = typh_data$TBL, col = "red", pch = 19)
+
+text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+text(y = typh_data$TBL, x = typh_data$max_vert, labels = typh_data$Taxon, pos = 1, cex = 0.7)
+
+# Question 8 --------------------------------------------------------------
+
 ## Question: Does vertebrae ratio correlate with body width ratio? 
 
 # Correlation between width ratio and vert ratio --------------------------------
-vert_ratio <- anilios_data$ver_rati; names(vert_ratio) <- anilios_data$species
-width_ratio <- anilios_data$width_ratio; names(width_ratio) <- anilios_data$species
+vert_ratio <- anilios_vert$ratio; names(vert_ratio) <- anilios_data$species
+width_ratio <- anilios_vert$body_ratio; names(width_ratio) <- anilios_data$species
+aspect_ratio <- anilios_vert$aspect; names(aspect_ratio) <- anilios_data$species
 
 ### Using geomorph::procD.pgls 
-vert.pgls <- geomorph::procD.pgls(vert_ratio ~ width_ratio, phy = anilios_tree)
+vert.pgls <- geomorph::procD.pgls(vert_ratio ~ aspect_ratio, phy = anilios_tree)
 summary(vert.pgls)
 predict(vert.pgls)
 coefficients(vert.pgls)
+
 dev.off()
-
-sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = names(width_ratio))
-
 # Plotting subset just Anilios species
-plot(vert_ratio ~ width_ratio, bty="n", 
+plot(vert_ratio ~ aspect_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
-     xlab = "Body width ratio", ylab = "Vertebrae ratio")
+     xlab = "Aspect ratio", ylab = "Vertebrae ratio")
 text(x = width_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
-# plot(anilios_data$tot_vert ~ anilios_data$mean_width)
+plot(anilios_vert$ratio ~ anilios_vert$aspect)
+
+### Will need to change the column names and make sure this works
 
 ### using phylolm to fit this regression but using different evolutionary models
 fit_width_EB <- phylolm(ver_rati ~ width_ratio, data = anilios_data, phy = anilios_tree, measurement_error=T, model="EB", lower.bound=-10, upper.bound=10)
