@@ -1,50 +1,50 @@
-﻿Taxon,TBL,max_vert
-Rhinotyphlops anomalus,400,206
-Rhinotyphlops caecus,425,355
-Rhinotyphlops crossii,310,317
-Rhinotyphlops feae,330,311
-Rhinotyphlops gallicus,470,426
-Rhinotyphlops graueri,360,382
-Rhinotyphlops kibarae,500,370
-Rhinotyphlops lalandei,310,222
-Rhinotyphlops leucocephalus,220,193
-Rhinotyphlops lumbriciformis,445,382
-Rhinotyphlops newtoni,390,321
-Rhinotyphlops pallidus,265,303
-Rhinotyphlops praeocularis,390,358
-Rhinotyphlops rufescens,490,448
-Rhinotyphlops schinzi,255,244
-Rhinotyphlops schlegelii brevis,700,250
-Rhinotyphlops schlegelii dinga,817,224
-Rhinotyphlops schlegelii petersii,720,193
-Rhinotyphlops schlegelii schlegelii,680,206
-Rhinotyphlops scortecci,280,255
-Rhinotyphlops somalicus,525,339
-Rhinotyphlops stejnegeri,465,367
-Rhinotyphlops sudanensis,485,408
-Rhinotyphlops unitaeniatus,405,332
-Rhinotyphlops wittei,310,374
-Typhlops angolensis,620,237
-Typhlops bibronii,470,223
-Typhlops boylei,185,212
-Typhlops braminus,170,206
-Typhlops caecatus,165,228
-Typhlops cuneirostris,189,153
-Typhlops decorosus,505,320
-Typhlops elegans,420,220
-Typhlops fornasinii,155,167
-Typhlops gierrai,480,242
-Typhlops leucostictus,230,236
-Typhlops lineolatus lineolatus,560,214
-Typhlops lineolatus tanganicanus,385,247
-Typhlops manni,360,301
-Typhlops obtusus,356,271
-Typhlops platyrhynchus,245,227
-Typhlops punctatus congestus,765,206
-Typhlops punctatus liberiensis,720,218
-Typhlops punctatus punctatus,660,224
-Typhlops rondoensis,350,216
-Typhlops socotranus,255,226
-Typhlops steinhausi,420,255
-Typhlops ulugurensis,230,263
-Typhlops zenkeri,130,199
+﻿Taxon,TBL,max_vert,new_name,phylo
+Rhinotyphlops anomalus,400,206,,
+Rhinotyphlops caecus,425,355,,
+Rhinotyphlops crossii,310,317,,
+Rhinotyphlops feae,330,311,,
+Rhinotyphlops gallicus,470,426,,
+Rhinotyphlops graueri,360,382,,
+Rhinotyphlops kibarae,500,370,,
+Rhinotyphlops lalandei,310,222,,y
+Rhinotyphlops leucocephalus,220,193,,
+Rhinotyphlops lumbriciformis,445,382,,
+Rhinotyphlops newtoni,390,321,,
+Rhinotyphlops pallidus,265,303,,
+Rhinotyphlops praeocularis,390,358,,
+Rhinotyphlops rufescens,490,448,,
+Rhinotyphlops schinzi,255,244,,
+Rhinotyphlops schlegelii brevis,700,250,,y
+Rhinotyphlops schlegelii dinga,817,224,,y
+Rhinotyphlops schlegelii petersii,720,193,,y
+Rhinotyphlops schlegelii schlegelii,680,206,,y
+Rhinotyphlops scortecci,280,255,,
+Rhinotyphlops somalicus,525,339,,
+Rhinotyphlops stejnegeri,465,367,,
+Rhinotyphlops sudanensis,485,408,,
+Rhinotyphlops unitaeniatus,405,332,,
+Rhinotyphlops wittei,310,374,,
+Typhlops angolensis,620,237,,
+Typhlops bibronii,470,223,,y
+Typhlops boylei,185,212,,
+Typhlops braminus,170,206,,
+Typhlops caecatus,165,228,,
+Typhlops cuneirostris,189,153,,
+Typhlops decorosus,505,320,,
+Typhlops elegans,420,220,,
+Typhlops fornasinii,155,167,,
+Typhlops gierrai,480,242,,
+Typhlops leucostictus,230,236,,
+Typhlops lineolatus lineolatus,560,214,,y
+Typhlops lineolatus tanganicanus,385,247,,y
+Typhlops manni,360,301,,
+Typhlops obtusus,356,271,,
+Typhlops platyrhynchus,245,227,,
+Typhlops punctatus congestus,765,206,,
+Typhlops punctatus liberiensis,720,218,,
+Typhlops punctatus punctatus,660,224,,
+Typhlops rondoensis,350,216,,
+Typhlops socotranus,255,226,,
+Typhlops steinhausi,420,255,,
+Typhlops ulugurensis,230,263,,
+Typhlops zenkeri,130,199,,
