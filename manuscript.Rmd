@@ -83,13 +83,19 @@ Compared to other snakes, the vertebral column of fossorial snakes tend to featu
 
 The Australian blindsnake radiation comprise 47 described species [@tiatragulAustralia2023] with considerably diverse morphology from narrow-and-long (aspect ratio >= 100) to robust-and-wide (aspect ratio < 60). 
 
-In this study, we investigate the interspecific variation in the number of vertebrae to test the hypothesis that changes in developmental patterns underpin the evolution of different body shapes in Australian typhlopid snakes. 
+In this study, we investigate the prevalence of pleomerism among Australian blindsnakes and test hypotheses that deviations from pleomerism may be explained by different body shapes or other ecological factors among Australian typhlopid snakes. The specific questions we addressed are: 
 
-Specifically, we test two predictions:
-(1) narrow-and-long species develop from postnatal ontogenetic changes where vertebral numbers are not significantly different between narrow-and-long species compared to wide-and-robust species; but are elongated. 
-(2) Narrow-and-long blindsnakes develop via changes in the embryonic and postnatal stages where narrow-and-long species have greater number of vertebrae than wide-and-robust species. 
+1. How prevalent is pleomerism among blindsnakes?
 
-To test these predictions, we quantified the number of pre- and post-clocal vertebra across 37 species of Australian blindsnakes. 
+2. Can deviations from pleomerism be explained by body shape in a genus of Australian blindsnakes?
+
+3. Do vertebral number and body size vary with mean annual temperature?
+
+<!-- Specifically, we test two predictions: -->
+<!-- (1) narrow-and-long species develop from postnatal ontogenetic changes where vertebral numbers are not significantly different between narrow-and-long species compared to wide-and-robust species.  -->
+<!-- (2) Narrow-and-long blindsnakes develop via changes in the embryonic and postnatal stages where narrow-and-long species have greater number of vertebrae than wide-and-robust species.  -->
+
+To answer these questions we gathered data on the number of vertebrae across XX species of Australian blindsnakes. 
 
 # Material and Methods
 
@@ -99,7 +105,7 @@ We examined 341 specimens representing 44 lineages *Anilios* blindsnakes includi
 
 ## Phylogeny
 
-We extracted 37 lineages of Australian blindsnakes from the time-calibrated phylogeny of Australian blindsnakes and outgroups presented in [@tiatragulAustralia2023]. The subset phylogeny represents 35/47 formally described species of _Anilios_ along with two additional genetically distinct lineages: one eastern population of "_A. grypus_" and one eastern population of "_A. ligatus_" [@tiatragulAustralia2023]. This phylogeny was inferred using the shortcut coalescent method in ASTRAL III [@zhangASTRALIIIPolynomialTime2018] based on 4930 maximum likelihood gene trees estimated using IQTREE [@minhIQTREE2020]. Divergence dating was estimated using MCMCTree from the PAML package [@yangPAML2007] based on 27 squamate reptile fossil calibrations [@tiatragulAustralia2023]. 
+We extracted 37 lineages of Australian blindsnakes from the time-calibrated phylogeny of Australian blindsnakes and outgroups presented in [@tiatragulAustralia2023]. The subset phylogeny represents 35/47 formally described species of _Anilios_ along with two additional genetically distinct lineages: one eastern population of "_A. grypus_" and one eastern population of "_A. ligatus_" [@tiatragulAustralia2023]. This phylogeny was inferred using the shortcut coalescent method in ASTRAL III [@zhangASTRALIIIPolynomialTime2018] based on 4930 maximum likelihood gene trees estimated using IQTREE [@minhIQTREE2020]. Divergence dating was estimated using MCMCTree from the PAML package [@yangPAML2007] based on 27 squamate reptile fossil calibrations [@tiatragulAustralia2023]. This phylogeny is was used for all phylogenetic comparative analyses. 
 
 ## Morphological data 
 
@@ -129,16 +135,22 @@ We did this by testing whether the total number of vertebrae positively correlat
 
 # Results
 
+### Prevalence of pleomerism among blindsnakes
+
 Total number of vertebrae varies among the 39 species of Australo-Papuan blindsnakes in this study (Fig. \@ref(fig:fig-variation-totalvert)), ranging from 146 in *A. tovelli* to 400 in *A. grypus* ($$Table 1$$). 
-
-We found a weakly positive but non statistically significant relationship between maximum number of total vertebrae and maximum SVL (PGLS, slope=0.28, y=256, R^2^=0.02, F=0.72, Z=0.29, P=0.42), indicating an absence of pleomerism in Australian blindsnakes (Fig. \@ref(fig: fig-tbl-vert)). 
-
-However, we found that vertebrae ratio is postively correlated with aspect ratio (PGLS, slope=-0.0048, y=0.73, R^2^=0.17, F=7.09,, Z=2.2, P=0.011), indicating that species that are more narrow-and-wide usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-width-ratios)). 
 
 ```{r fig-variation-totalvert, fig.cap= 'Interspecific variation in total number of vertebrae among Australo-Papuan blindsnake and close relatives. The boxplot represent the distribution of the data, with vertical inside representing the median. The extent of the box represent the lower (left) and upper (right) quartile, with the whiskers showing 1.5 times the interquartile range. Outliers beyond this range are depicted as individual points.', out.width="165mm", out.height= "126mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/tree-boxplot-totalVert.jpg'))
 ```
+
+
+For the Australian blindsnakes, we found a weakly positive but non statistically significant relationship between maximum number of total vertebrae and maximum SVL (PGLS, slope=0.28, y=256, R^2^=0.02, F=0.72, Z=0.29, P=0.42), indicating an absence of pleomerism in Australian blindsnakes (Fig. \@ref(fig: fig-tbl-vert)). This suggest that maximum length is acheived by elongating each vertebrae rather than by adding additional vertebrae
+
+
+### Relationship between pleomerism and body shape
+However, we found that vertebrae ratio is postively correlated with aspect ratio (PGLS, slope=-0.0048, y=0.73, R^2^=0.17, F=7.09,, Z=2.2, P=0.011), indicating that species that are more narrow-and-wide usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-width-ratios)). This is consistent with colubrids and viperids, where species that are more elongated tend to have greater number of vertebrae than stouter ones [@lindellEvolution1994]. 
+
 
 <!-- Fig. Vertebral counts vs max body length  -->
 ```{r fig-tbl-vert, fig.cap= 'Maximum vertebral counts plotted against maximum total body length for Australian typhlopids. Trend line represent PGLS regression for Australian species.', out.width="165mm", out.height= "126mm"}
@@ -152,13 +164,11 @@ knitr::include_graphics(paste0(WD, '/assets/figures/tbl-vert.jpg'))
 knitr::include_graphics(paste0(WD, '/assets/figures/vert-aspect.jpg'))
 ```
 
+### Correlation with mean annual temperature among Australian blindsnakes
 
 
 
 <!-- ### Variation in vertebrae number -->
-
-
-
 
 Closely related species tend to have similar number of total vertebrae. 
 Males tend to have greater number of postcloacal vertebrae 
@@ -167,18 +177,22 @@ Males tend to have greater number of postcloacal vertebrae
 
 <!-- FIGURE 1 -->
 
-
-
-
 There is a statistically significant correlation between vertebrae ratio and fineness of the body. Species that have more vertebrae per length (vertebrae ratio > 1) are usually more fine, whereas more robust species have lower number of vertebrae. 
-
 
 
 # Discussion
 
+Summary about what the paper found
 
+
+Not so surprising but shows that pleomerism does not explain variation in body size in this continental radiation of blindsnakes. Only real giant taxa like *Rhinotyphlops* and *Afrotyphlops* tend to break the rule. However, when fitted in our PGLS, we found that even they are not exceptional???
+
+Body shape varied with number of vertebrae in similar ways as previously reported in vipers and colubrids [@lindellEvolution1994]. We can speculate that species that are narrow-and-long may be using pre-existing burrows rather than digging their own burrow. Narrow-and-wide phenotypes are common among Leptotyphlopidae, which are thought to use existing burrows rather than dig their own burrow [@herrelBurrowing2021]. The Australian group is quite exceptional because within the same genus, their is great variation in aspect ratio so species that evolved more narrow-and-long bodies may be converging on the lifestyle with other blindsnakes that have this narrow-and-long phenotype. On the other hand, large robust-and-wide species are expected to be able to generate much more force and make their own burrows. A previous study (Tiatragul et al. unpublished) found that species that robust-and-wide species tend to occupy areas in Australia that have easier to penetrate soil compared to narrow-and-long species that tend to occupy areas with more difficult to penetrate soil. However, more detailed microhabitat observations is required to determine if body shape is related to the environment in which they burrow. 
+
+
+Temperature seem to have XXX effect. Common garden experiments for different species of snakes can tell us if incubation temperature and thus rate of development influences number of vertebrae. We would expect higher temperature to accelerate development (CITE anolis papers, turtles, etc), so less time for embryonic development. 
 
 
 
 ## Miscellaneous 
-Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. 
+Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. Blindsnakes are generally small enough to fit in an X-ray scanner so more people should do it.
