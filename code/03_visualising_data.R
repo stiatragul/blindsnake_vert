@@ -233,17 +233,30 @@ vert_data <- vert_df %>% dplyr::group_by(species) %>%
                    mean_post = mean(postcloacal_vert),
                    mean_tot_vert = mean(precloacal_vert + postcloacal_vert),
                    body_ratio = mean(midbody_diameter/total_length),
+                   # aspect = max(total_length/midbody_diameter),
                    aspect = mean(total_length/midbody_diameter),
                    max_total_vert = max(total_vert),
                    max_preclo = max(precloacal_vert),
                    max_svl = max(svl),
                    max_tbl = max(total_length))
 
-
-vert_df
-
 vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
+
+
+
+### Another way is to use the data from the biggest total length individual in that species
+slice_df <- vert_df %>% dplyr::group_by(species) %>% 
+  dplyr::slice(which.max(total_length)) %>% 
+  dplyr::ungroup()
+  
+slice_df$ratio <- slice_df$total_vert/slice_df$total_length
+slice_df$aspect <- slice_df$total_length/slice_df$midbody_diameter
+
+
+
+
+
 # Calculating vertebrae number to length ratio
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
@@ -400,7 +413,6 @@ aspect_ratio <- anilios_vert$aspect; names(aspect_ratio) <- anilios_data$species
 ### Using geomorph::procD.pgls 
 vert.pgls <- geomorph::procD.pgls(vert_ratio ~ aspect_ratio, phy = anilios_tree)
 summary(vert.pgls)
-predict(vert.pgls)
 coefficients(vert.pgls)
 
 dev.off()
@@ -408,11 +420,28 @@ dev.off()
 plot(vert_ratio ~ aspect_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
-     xlab = "Aspect ratio", ylab = "Vertebrae ratio")
-text(x = width_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+     xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
+text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
-plot(anilios_vert$ratio ~ anilios_vert$aspect)
+
+## Using maximum total length individual per species
+
+anilios_slice <- slice_df[which(slice_df$species %in% anilios_tree$tip.label),]
+
+vert_asp.pgls <- geomorph::procD.pgls(setNames(anilios_slice$vert_ratio, anilios_slice$species) ~ setNames(anilios_slice$aspect, anilios_slice$species), phy = anilios_tree)
+summary(vert_asp.pgls)
+coefficients(vert_asp.pgls)
+
+
+plot(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
+     pch = 19,
+     xlab = "Max aspect ratio", ylab = "Vertebrae ratio")
+text(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, labels = anilios_slice$species, pos = 1, cex = 0.7)
+abline(a = coefficients(vert_asp.pgls)[1], b = coefficients(vert_asp.pgls)[2])
+
+plot(anilios_vert$max_total_vert ~ anilios_vert$aspect, bty = "n")
 
 ### Will need to change the column names and make sure this works
 
@@ -436,13 +465,32 @@ summary(fit_width_LB)
 ## in hard soil? More robust species are found in softer soil (from blindsnakemorpho project). Or building larger vertebrae?
 
 
-# Question 8 --------------------------------------------------------------
+# Question 9 --------------------------------------------------------------
 
 ## Question: Does vertebrae ratio correlate with any environmental factors? 
-## Environmental factors: 
+# Environmental factors:
 # mean annual temperature, 
-# aridity index, 
+# aridity index,
 # soil compactness.
+
+
+## PGLS using geomorph to test effect of mean annual temperature
+
+annual_mean_temp <- setNames(anilios_data$temp_mean, anilios_data$species)
+
+### Using geomorph::procD.pgls 
+temp.pgls <- geomorph::procD.pgls(vert_ratio ~ annual_mean_temp, phy = anilios_tree)
+summary(temp.pgls)
+coefficients(temp.pgls)
+
+# Plot result
+plot(vert_ratio ~ annual_mean_temp, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
+     pch = 19,
+     xlab = "Mean annual temperature", ylab = "Vertebrae ratio")
+text(x = annual_mean_temp, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(temp.pgls)[1], b = coefficients(temp.pgls)[2])
+
 
 # Total vertebrae  -- full model - no effect
 fit_phylm_total_vert <- phylolm(tot_vert ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
@@ -471,8 +519,9 @@ summary(fit_vrat_5)
 
 # Visualise data
 dev.off()
-par(mfrow=c(1,3))
-plot(ver_rati ~ temp_mean, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
+# par(mfrow=c(1,3))
+plot(ver_rati ~ temp_mean, data = anilios_data, bty = "n", pch = 19,
+     ylab = "# Vertebrae / total length (mm)", xlab = "Mean annual temperature (°C)")
 abline(fit_vrat_2, lty = 3)
 
 plot(ver_rati ~ mean_bulk, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
