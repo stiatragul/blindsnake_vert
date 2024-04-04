@@ -79,7 +79,7 @@ Although all blindsnakes are fossorial, body size and shape vary significantly a
 
 Their morphological differences led to the idea that leptyphlopids generally use existing burrows while typhlopids create their own burrow. 
 
-Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relative short tails of blindsnakes (CITE). 
+Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE). 
 
 The Australian blindsnake radiation comprise 47 described species [@tiatragulAustralia2023] with considerably diverse morphology from narrow-and-long (aspect ratio >= 100) to robust-and-wide (aspect ratio < 60). 
 
@@ -89,7 +89,7 @@ In this study, we investigate the prevalence of pleomerism among Australian blin
 
 2. Can deviations from pleomerism be explained by body shape in a genus of Australian blindsnakes?
 
-3. Do vertebral number and body size vary with mean annual temperature?
+3. Does vertebral ratio vary with soil compactness or mean annual temperature?
 
 <!-- Specifically, we test two predictions: -->
 <!-- (1) narrow-and-long species develop from postnatal ontogenetic changes where vertebral numbers are not significantly different between narrow-and-long species compared to wide-and-robust species.  -->
@@ -119,8 +119,11 @@ To obtain vertebral counts, we X-ray scanned the specimens at various institutio
 We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Pre- and post-cloacal vertebrae were distinguished based on vertebral morphology [@szyndlarIllustrated2023]. Additionally, we quantified intracolumnar length of each vertebrae for three species representing narrow-and-wide phenotypes *A. grypus*, wide-and-robust phenotypes (*A. pinguis*), and intermediate phenotypes (*A. centralis*). Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 to place landmarks medially along the vertebral column at the anterior limit of the centrum of each vertebra. We then calculated the inter-landmark distances by applying the Pythagorean theorem between sequential landmark coordinates in R. Measurements were repeated three times to account for measurement errors. 
 
 
-<!-- ## Environmental data  -->
+## Environmental data 
 <!-- NEED TO PUT IN THE CORRECT VALUES HERE -->
+
+We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA). A total of XXXX records (min = , median = , max = , median per species) representing XX species of Australian *Anilios* for our analyses.
+
 <!-- We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA). A total of XXXX records (min = , median = , max = , median per species) representing XX species of Australian *Anilios* for our analyses.
 
 We selected soil bulk density, annual mean temperature, and aridity index as the most biologically relevant data to describe blindsnake niches. 
@@ -131,7 +134,9 @@ From raster files that contained modelled approximations at the resolution of 3 
 ## Statistical analyses
 
 All statistical analyses were performed in R v.4.31 [@rcoreteamLanguage2023]. To test for evolutionary correlations between the number of vertebrae and body size and proportions, we used phylogenetic generalised least squares (PGLS) regression under a model of Browninan motion implemented in `geomorph` v.4.0.6 [@adamsGeomorph2023]. First, we tested for pleomerism [@lindseyPleomerism1975] across 37 species of *Anilios* blindsnakes. 
-We did this by testing whether the total number of vertebrae positively correlate with body size when regressing the maximum number of total vertebrae against maximum total body length from Tiatragul et al. (unpublished). Then, we test whether the vertebrae to body length ratio is related to maximum aspect ratio, defined by total body length / body width, also from Tiatragul et al. (unpublished) data. 
+We did this by testing whether the total number of vertebrae positively correlate with body size when regressing the maximum number of total vertebrae against maximum total body length from Tiatragul et al. (unpublished). Next, we test whether the vertebrae to body length ratio is related to maximum aspect ratio, defined by total body length / body width, also from Tiatragul et al. (unpublished) data. Finally, we tested if variation in vertebral ratio can be explained by mean annual temperature.
+
+
 
 # Results
 
@@ -144,13 +149,10 @@ Total number of vertebrae varies among the 39 species of Australo-Papuan blindsn
 knitr::include_graphics(paste0(WD, '/assets/figures/tree-boxplot-totalVert.jpg'))
 ```
 
-
 For the Australian blindsnakes, we found a weakly positive but non statistically significant relationship between maximum number of total vertebrae and maximum SVL (PGLS, slope=0.28, y=256, R^2^=0.02, F=0.72, Z=0.29, P=0.42), indicating an absence of pleomerism in Australian blindsnakes (Fig. \@ref(fig: fig-tbl-vert)). This suggest that maximum length is acheived by elongating each vertebrae rather than by adding additional vertebrae
 
-
-### Relationship between pleomerism and body shape
+### Relationship between vertebrae ratio and body shape
 However, we found that vertebrae ratio is postively correlated with aspect ratio (PGLS, slope=-0.0048, y=0.73, R^2^=0.17, F=7.09,, Z=2.2, P=0.011), indicating that species that are more narrow-and-wide usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-width-ratios)). This is consistent with colubrids and viperids, where species that are more elongated tend to have greater number of vertebrae than stouter ones [@lindellEvolution1994]. 
-
 
 <!-- Fig. Vertebral counts vs max body length  -->
 ```{r fig-tbl-vert, fig.cap= 'Maximum vertebral counts plotted against maximum total body length for Australian typhlopids. Trend line represent PGLS regression for Australian species.', out.width="165mm", out.height= "126mm"}
@@ -166,33 +168,26 @@ knitr::include_graphics(paste0(WD, '/assets/figures/vert-aspect.jpg'))
 
 ### Correlation with mean annual temperature among Australian blindsnakes
 
+We found a positive relationship between vertebrae ratio and species mean annual temperature (PGLS, slope=0.038, y=0.19, R^2^=0.21, F=9.58,, Z=2.32, P=0.009), indicating species that have greater amount of vertebrae for body size are generally found in places that are warmer.
 
+<!-- Fig: Pleomerism and ratio correlations -->
+```{r fig-vert-aspect-ratios, fig.cap= '(B) Relationship between mean vertebrae and aspect ratios among Australian blindsnake species. Vertebrae ratio is calculated by total vertebrae/total length, and aspect ratio is total body length/midbody diameter. Species with large aspect ratios are narrow-and-long while species with low aspect ratios robust-and wide', out.width="165mm", out.height= "126mm"}
 
-<!-- ### Variation in vertebrae number -->
-
-Closely related species tend to have similar number of total vertebrae. 
-Males tend to have greater number of postcloacal vertebrae 
-
-
-
-<!-- FIGURE 1 -->
-
-There is a statistically significant correlation between vertebrae ratio and fineness of the body. Species that have more vertebrae per length (vertebrae ratio > 1) are usually more fine, whereas more robust species have lower number of vertebrae. 
-
+knitr::include_graphics(paste0(WD, '/assets/figures/vert-ratio-to-temperature.jpg'))
+```
 
 # Discussion
 
 Summary about what the paper found
-
 
 Not so surprising but shows that pleomerism does not explain variation in body size in this continental radiation of blindsnakes. Only real giant taxa like *Rhinotyphlops* and *Afrotyphlops* tend to break the rule. However, when fitted in our PGLS, we found that even they are not exceptional???
 
 Body shape varied with number of vertebrae in similar ways as previously reported in vipers and colubrids [@lindellEvolution1994]. We can speculate that species that are narrow-and-long may be using pre-existing burrows rather than digging their own burrow. Narrow-and-wide phenotypes are common among Leptotyphlopidae, which are thought to use existing burrows rather than dig their own burrow [@herrelBurrowing2021]. The Australian group is quite exceptional because within the same genus, their is great variation in aspect ratio so species that evolved more narrow-and-long bodies may be converging on the lifestyle with other blindsnakes that have this narrow-and-long phenotype. On the other hand, large robust-and-wide species are expected to be able to generate much more force and make their own burrows. A previous study (Tiatragul et al. unpublished) found that species that robust-and-wide species tend to occupy areas in Australia that have easier to penetrate soil compared to narrow-and-long species that tend to occupy areas with more difficult to penetrate soil. However, more detailed microhabitat observations is required to determine if body shape is related to the environment in which they burrow. 
 
 
-Temperature seem to have XXX effect. Common garden experiments for different species of snakes can tell us if incubation temperature and thus rate of development influences number of vertebrae. We would expect higher temperature to accelerate development (CITE anolis papers, turtles, etc), so less time for embryonic development. 
-
-
+Mean annual temperature was a significant predictor of vertebrae ratio. Temperature could be a proxy for several ecological factors such ...
+Common garden experiments for different species of snakes can tell us if incubation temperature and thus rate of development influences number of vertebrae. We would expect higher temperature to accelerate development (CITE anolis papers, turtles, etc), so less time for embryonic development. 
 
 ## Miscellaneous 
 Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. Blindsnakes are generally small enough to fit in an X-ray scanner so more people should do it.
+
