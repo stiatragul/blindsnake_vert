@@ -84,7 +84,7 @@ vert_profile_plotter <- function(.data1, .data2, .data3, .title = NULL, .error =
   predicted_points <- predict(polynomial_fit, newdata = data.frame(x_values))
   
   # Plot the profile
-  plot(relative_size, xlab = "Vertebra Number (index)", ylab = "Relative Vertebra Size")
+  plot(relative_size, xlab = "Vertebra number", ylab = "Relative vertebra size", ylim=c(0,0.01), xlim=c(0, 400))
   title(paste(.title)) 
   
   # Add error bars if .error is TRUE
