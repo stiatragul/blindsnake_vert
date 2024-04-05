@@ -8,7 +8,7 @@
 # Load packages with two lines
 
 library(ggplot2)
-# library(dplyr)
+library(dplyr)
 library(phytools); 
 library(geiger);
 library(ape); 
@@ -64,7 +64,6 @@ vert_df$vert_ratio <- vert_df$total_vert / vert_df$total_length
 plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #", ylab = "Total length (mm)", bty = "n")
 
 # No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae and others that shorten their vertebrae relative to the mean. 
-
 
 # Total number of vertebrae -----------------------------------------------
 
@@ -277,14 +276,14 @@ spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
 
 ## This is using old code where we can't adjust the ylim
 
-pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 11.7, height = 8.3, paper = "a4r")
+# Figure 1: phylo + boxplots 
+
+pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 10, height = 7.5)
 plotTree.boxplot(sub_phy,x=aspect_v~spp,
-                 args.boxplot = list(xlab="Aspect ratio (total length/body width",
+                 args.boxplot = list(xlab="Aspect ratio (total length/body width)",
                                      # ylim=c(20,170),
                                      col="grey99"))
 dev.off()
-
-
 
 plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
                  args.boxplot = list(xlab="Aspect ratio (total length/body width"))
@@ -383,23 +382,26 @@ coefficients(pleomerism.pgls)
 
 sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species)
 
+# Log max body length against log max number of vertebrae
+
+pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
 plot(max_tbl~max_vert, bty="n", pch = 19,
-     ylab = "Max. total body length (mm)", xlab = "Maximum total vertebrae",
-     xlim=c(150,400), ylim=c(100,700))
+     ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
+     # xlim=c(150,400), ylim=c(100,700))
 text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
-
+dev.off()
 ## Including Head & Polly 2007 typhlopid data
-typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
-typh_data
-
-plot(max_tbl~max_vert, bty="n", pch = 19,
-     ylab = "Maximum SVL", xlab = "Maximum total vertebrae", 
-     xlim=c(100,500), ylim=c(100,800))
-points(x = typh_data$max_vert, y = typh_data$TBL, col = "red", pch = 19)
-
-text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
-text(y = typh_data$TBL, x = typh_data$max_vert, labels = typh_data$Taxon, pos = 1, cex = 0.7)
+# typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
+# typh_data
+# 
+# plot(max_tbl~max_vert, bty="n", pch = 19,
+#      ylab = "Maximum SVL", xlab = "Maximum total vertebrae", 
+#      xlim=c(100,500), ylim=c(100,800))
+# points(x = typh_data$max_vert, y = typh_data$TBL, col = "red", pch = 19)
+# 
+# text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+# text(y = typh_data$TBL, x = typh_data$max_vert, labels = typh_data$Taxon, pos = 1, cex = 0.7)
 
 # Question 8 --------------------------------------------------------------
 
@@ -417,13 +419,18 @@ coefficients(vert.pgls)
 
 dev.off()
 # Plotting subset just Anilios species
+hist(aspect_ratio)
+hist(vert_ratio)
+
+# Vertebrae ratio against aspect ratio
+
+pdf(file = "output/vert-aspect.pdf", width = 10, height = 7.5)
 plot(vert_ratio ~ aspect_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
-     pch = 19,
-     xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
+     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
 text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
-
+dev.off()
 
 ## Using maximum total length individual per species
 
@@ -441,7 +448,7 @@ plot(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, bty="n",
 text(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, labels = anilios_slice$species, pos = 1, cex = 0.7)
 abline(a = coefficients(vert_asp.pgls)[1], b = coefficients(vert_asp.pgls)[2])
 
-plot(anilios_vert$max_total_vert ~ anilios_vert$aspect, bty = "n")
+# plot(anilios_vert$max_total_vert ~ anilios_vert$aspect, bty = "n")
 
 ### Will need to change the column names and make sure this works
 
@@ -470,26 +477,46 @@ summary(fit_width_LB)
 ## Question: Does vertebrae ratio correlate with any environmental factors? 
 # Environmental factors:
 # mean annual temperature, 
-# aridity index,
 # soil compactness.
 
+# We are using mean total vertebrae/mean total length for each species
 
 ## PGLS using geomorph to test effect of mean annual temperature
 
 annual_mean_temp <- setNames(anilios_data$temp_mean, anilios_data$species)
+bulk_density <- setNames(anilios_data$max_bulk, anilios_data$species)
 
 ### Using geomorph::procD.pgls 
 temp.pgls <- geomorph::procD.pgls(vert_ratio ~ annual_mean_temp, phy = anilios_tree)
 summary(temp.pgls)
 coefficients(temp.pgls)
 
-# Plot result
+
+### Using geomorph::procD.pgls 
+soil.pgls <- geomorph::procD.pgls(vert_ratio ~ bulk_density, phy = anilios_tree)
+summary(soil.pgls)
+coefficients(soil.pgls)
+
+# Plot results vertebrae ratio against ecological variables
+
+pdf(file = "output/vert-ecology.pdf", width = 11.3, height = 8.5)
+par(mfrow=c(1,2))
 plot(vert_ratio ~ annual_mean_temp, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
-     xlab = "Mean annual temperature", ylab = "Vertebrae ratio")
+     xlab = "Mean annual temperature (°C)", ylab = "Vertebrae ratio")
 text(x = annual_mean_temp, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(temp.pgls)[1], b = coefficients(temp.pgls)[2])
+
+## Soil
+
+plot(vert_ratio ~ bulk_density, bty="n", pch = 19,
+     xlab = "Max bulk density", ylab = "Vertebrae ratio")
+text(x = bulk_density, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(soil.pgls)[1], b = coefficients(soil.pgls)[2])
+dev.off()
+
+
 
 
 # Total vertebrae  -- full model - no effect
@@ -521,7 +548,7 @@ summary(fit_vrat_5)
 dev.off()
 # par(mfrow=c(1,3))
 plot(ver_rati ~ temp_mean, data = anilios_data, bty = "n", pch = 19,
-     ylab = "# Vertebrae / total length (mm)", xlab = "Mean annual temperature (°C)")
+     ylab = "Mean # of Vertebrae / total length (mm)", xlab = "Mean annual temperature (°C)")
 abline(fit_vrat_2, lty = 3)
 
 plot(ver_rati ~ mean_bulk, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
