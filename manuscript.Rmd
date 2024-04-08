@@ -146,19 +146,19 @@ For the Australian blindsnakes, we found a weakly positive but non-statistically
 However, we found that vertebrae ratio is positively correlated with aspect ratio (PGLS, slope=-0.0048, y=0.73, R^2^=0.17, F=7.09, Z=2.2, P=0.011), indicating that species that are more narrow-and-wide usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-aspect-ratios) and \@ref(fig:fig-vertebral-profile)). This is consistent with colubrids and viperids, where species that are more elongated tend to have greater number of vertebrae than stouter ones [@lindellEvolution1994]. 
 
 <!-- Fig. Vertebral counts vs max body length  -->
-```{r fig-tbl-vert, fig.cap= 'Maximum vertebral counts plotted against maximum total body length for Australian typhlopids. Trend line represent PGLS regression for Australian species.', out.width="165mm", out.height= "126mm"}
+```{r fig-tbl-vert, fig.cap= 'Maximum vertebral counts plotted against maximum total body length for Australian typhlopids. Trend line represent PGLS regression for Australian species.', out.width="165mm", out.height= "124mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/tbl-vert.jpg'))
 ```
 
 <!-- Fig: Pleomerism and ratio correlations -->
-```{r fig-vert-aspect-ratios, fig.cap= 'Relationship between mean vertebrae and aspect ratios among Australian blindsnake species. Vertebrae ratio is calculated by total vertebrae/total length, and aspect ratio is total body length/midbody diameter. Species with large aspect ratios are narrow-and-long while species with low aspect ratios robust-and-wide.', out.width="165mm", out.height= "180mm"}
+```{r fig-vert-aspect-ratios, fig.cap= 'Relationship between mean vertebrae and aspect ratios among Australian blindsnake species. Vertebrae ratio is calculated by total vertebrae/total length, and aspect ratio is total body length/midbody diameter. Species with large aspect ratios are narrow-and-long while species with low aspect ratios robust-and-wide.', out.width="165mm", out.height= "124mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/vert-aspect.jpg'))
 ```
 
 <!-- Fig: Vertebral profile -->
-```{r fig-vertebral-profile, fig.cap= 'Relative vertebral length plotted against vertebra number for three example species with fitted 4° polynomial curves overlaid.', out.width="126mm", out.height= "160mm"}
+```{r fig-vertebral-profile, fig.cap= 'Relative vertebral length plotted against vertebra number for three example species with fitted 4° polynomial curves overlaid.', out.width="140mm", out.height= "197mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/vertebral-profile.jpg'))
 ```
@@ -186,7 +186,7 @@ Mean annual temperature was a significant predictor of vertebrae ratio. Temperat
 Common garden experiments for different species of snakes can tell us if incubation temperature and thus rate of development influences number of vertebrae. We would expect higher temperature to accelerate development (CITE anolis papers, turtles, etc), so less time for embryonic development. 
 
 ## Miscellaneous 
-Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. Blindsnakes are generally small enough to fit in an X-ray scanner so more people should do it.
+Traditionally, ventral scale counts have been used as a proxy for vertebral number as they correlate for most alethinophidian snakes [@alexanderPattern1966]. We found that this is (not) the case in blindsnakes. Blindsnakes are generally small enough to fit in an X-ray scanner, so more people should do it.
 
 
 
