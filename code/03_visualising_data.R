@@ -266,6 +266,7 @@ plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)),
                  args.barplot=list(xlab="Vertebrae/Length ratio"))
 
 
+
 # Aspect ratio as boxplot
 aspect_v <- setNames(vert_df$total_length / vert_df$midbody_diameter, nm = vert_df$species)
 aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
@@ -284,6 +285,18 @@ plotTree.boxplot(sub_phy,x=aspect_v~spp,
                                      # ylim=c(20,170),
                                      col="grey99"))
 dev.off()
+
+
+
+# Fig vertebrae number boxplot
+vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
+vert_num <- vert_num[which(names(vert_num) %in% sub_phy$tip.label)]
+plotTree.boxplot(sub_phy,x=vert_num~spp,
+                 args.boxplot = list(xlab="Total number of vertebrae",
+                                     # ylim=c(20,170),
+                                     col="grey99"))
+
+
 
 plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
                  args.boxplot = list(xlab="Aspect ratio (total length/body width"))
