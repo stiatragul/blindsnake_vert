@@ -252,10 +252,6 @@ slice_df <- vert_df %>% dplyr::group_by(species) %>%
 slice_df$ratio <- slice_df$total_vert/slice_df$total_length
 slice_df$aspect <- slice_df$total_length/slice_df$midbody_diameter
 
-
-
-
-
 # Calculating vertebrae number to length ratio
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
@@ -287,7 +283,6 @@ plotTree.boxplot(sub_phy,x=aspect_v~spp,
 dev.off()
 
 
-
 # Fig vertebrae number boxplot
 vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
 vert_num <- vert_num[which(names(vert_num) %in% sub_phy$tip.label)]
@@ -295,8 +290,6 @@ plotTree.boxplot(sub_phy,x=vert_num~spp,
                  args.boxplot = list(xlab="Total number of vertebrae",
                                      # ylim=c(20,170),
                                      col="grey99"))
-
-
 
 plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
                  args.boxplot = list(xlab="Aspect ratio (total length/body width"))
@@ -445,6 +438,35 @@ text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 dev.off()
 
+
+# Mean aspect ratio (y) against max. number of vertebrae
+ratio_maxvert.pgls <- geomorph::procD.pgls(max_vert ~ aspect_ratio, phy = anilios_tree)
+summary(ratio_maxvert.pgls)
+coefficients(ratio_maxvert.pgls)
+
+plot(max_vert ~ aspect_ratio, bty="n", pch = 19, 
+     ylab = "Max number of vertebrae", xlab = "Mean aspect ratio")
+text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
+
+
+pdf(file = "output/vert-aspect.pdf", width = 10, height = 7.5)
+par(mfrow=c(2,1))
+plot(vert_ratio ~ aspect_ratio, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
+     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
+text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
+
+plot(max_vert ~ aspect_ratio, bty="n", pch = 19, 
+     ylab = "Max total number of vertebrae", xlab = "Mean aspect ratio")
+text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
+dev.off()
+
+
+
+
 ## Using maximum total length individual per species
 
 anilios_slice <- slice_df[which(slice_df$species %in% anilios_tree$tip.label),]
@@ -452,7 +474,6 @@ anilios_slice <- slice_df[which(slice_df$species %in% anilios_tree$tip.label),]
 vert_asp.pgls <- geomorph::procD.pgls(setNames(anilios_slice$vert_ratio, anilios_slice$species) ~ setNames(anilios_slice$aspect, anilios_slice$species), phy = anilios_tree)
 summary(vert_asp.pgls)
 coefficients(vert_asp.pgls)
-
 
 plot(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
@@ -462,6 +483,9 @@ text(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, labels = anilios_slice$
 abline(a = coefficients(vert_asp.pgls)[1], b = coefficients(vert_asp.pgls)[2])
 
 # plot(anilios_vert$max_total_vert ~ anilios_vert$aspect, bty = "n")
+
+
+
 
 ### Will need to change the column names and make sure this works
 
