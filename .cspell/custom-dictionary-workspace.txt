@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 Anilios
+behaviour
 blindsnake
 blindsnakes
 fossorial
@@ -7,6 +8,7 @@ interquartile
 Interspecific
 knitr
 Leptotyphlopidae
+macroevolutionary
 PGLS
 pleomerism
 specialised
