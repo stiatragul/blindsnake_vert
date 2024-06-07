@@ -38,14 +38,15 @@ library(kableExtra)
 **Authors**: Sarin Tiatragul^1^; Andrew Amey^2^; Scott Hocknull^2^;  Scott Keogh^1^; Emma Sherratt^3^
 
 ^1^Division of Ecology & Evolution, Research School of Biology, The Australian National University, Canberra 2601, ACT, Australia 
+
 ^2^Queensland Museum, Hendra, QLD, 4011, Australia
+
 ^3^School of Biological Sciences, The University of Adelaide, Adelaide, SA 5005, Australia
 
 
 **Corresponding author**: Sarin Tiatragul (sarin.tiatragul@anu.edu.au)  
 
 <!-- **Author contributions**:  -->
-Putter: 
 
 <!-- ST and ES conceptualised the study; ST collected morphology data;  -->
 <!-- ST obtained X-rays from SAM, WAM, and MAGNT. SH and AM provided X-rays Queensland Museum specimens. -->
@@ -73,19 +74,31 @@ Keywords: Scolecophidia, vertebrae, pleomerism, snakes,
 
 # Introduction
 
-***[General background]***
+* Axial evolution an important aspect of the vertebrate body plan evolution – facilitates diversity and influences locomotion 
+  <!-- Note the papers  that are about axial number relating to locomotion -->
+@galisFast2014 - mammals
+@vandammeSpeed2002 - lacertids
+@yamadaAdaptive2009;@forkerBendy2021 - gobies 
+@molnarMorphological2023 - chameleons
 
-* Introduce the concept of pleomerism? Association between body size and number of segments in vertebrae [@lindseyPleomerism1975].
-* Introduce work on other vertebrates [@headDissociation2007;@pollyTesting2001;@headEvolution2015]
-* In marine snakes [@sherrattVertebral2019;@sherrattMacroevolution2022]
+* Need a reference for mammals? Limited variation of a common theme that is constrained [@asherVariability2011;@naritaEvolution2005]
+@liDivergent2023 found vertebral counts to differ significantly between major groups of mammals and within groups. 
+* Reptiles, on the other hand, are more varied [@headEvolution2015]
+
+* Elongate animals have special properties of vertebral number known as pleomerism, where body size and number of segments in vertebrae are correlated [@lindseyPleomerism1975]. 
+Pleomerism has been observed in eels and fish [@wardEvolution2007;@wardDifferential2014;@reeceEvolutionary2013;], in squamates [@pollyTesting2001;@headDissociation2007;@headEvolution2015;@bergmannVertebral2012;@lindellEvolution1994;@cernanskyVertebral2019], in salamanders and caecilians [@bonettEvidence2017;@renousBody1989;@arntzenVertebral2015]
+
+* Snakes are a good model to study axial evolution because they have a high number of vertebrae and a wide range of body shapes 
+* In elapid snakes [@sherrattVertebral2019;@sherrattMacroevolution2022;@hamptonInterspecific2019;@hamptonRegionalization2023]; colubrid snakes [@nash-hahnModification2024].
+
 
 ***[Specific background]***
 
-Scolecophidians comprise XXX species of snakes with highly specialised phenotypes for a strictly fossorial life-style [@mirallesMolecular2018].
+Scolecophidians comprise XXX species of snakes with highly specialised phenotypes for a strictly fossorial lifestyle [@mirallesMolecular2018;@uetzQuarter2021].
 Although all blindsnakes are fossorial, body size and shape vary significantly among species (Tiatragul et al. unpublished; @shineNatural1990;@webbPreysize1993;@webbDietary2001;@ehmannFamily1993). Leptophlopids are generally thought to be more narrow-and-long compared to typhlopids, which are generally wide-and-robust for a given body length [@herrelBurrowing2021]. These differences in body size and proportions determine how much push force the snakes can generate when burrowing. 
 Their morphological differences led to the idea that leptyphlopids generally use existing burrows while typhlopids create their own burrow. 
 
-Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE). 
+Compared to other snakes, the vertebral column of fossorial snakes tends to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE). 
 
 * Other relevant specific background related to the angle of the paper
 
@@ -132,7 +145,7 @@ We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visu
 
 We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished) including a total of 3898 verified records (min=1, median=23, mean=81, max=525 per species). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA).
 
-We selected soil bulk density and annual mean temperature, as we are interested in the potential effects these may have on the distribution of species. Soil bulk density measures the penetrability of soil, which is a proxy for the type of microhabitat each species are most likely living in as they are all strictly fossorial. Bulk density values > 1.6 g/cm<sup>3</sup> indicate soil that restrict penetration by plant roots, while values <0.5 indicate looser, more organic soil [@mckenzieSoil2002]. Mean annual temperature is a climate proxy and is commonly used to describe niche for squamate reptiles [@coxEvolutionary2015;@pieEvolution2017;@wiensDiversity2013]. 
+We selected soil bulk density and annual mean temperature, as we are interested in the potential effects these may have on the distribution of species. Soil bulk density measures the penetrability of soil, which is a proxy for the type of microhabitat species is most likely living in as they are all strictly fossorial. Bulk density values > 1.6 g/cm<sup>3</sup> indicate soil that restrict penetration by plant roots, while values <0.5 indicate looser, more organic soil [@mckenzieSoil2002]. Mean annual temperature is a climate proxy and is commonly used to describe niche for squamate reptiles [@coxEvolutionary2015;@pieEvolution2017;@wiensDiversity2013]. 
 
 From raster files that contained modelled approximations at the resolution of 3 arc-seconds, we extracted soil bulk density values between 0 — 5cm depth from [CSIRO Soil and Landscape Grid of Australia](https://www.clw.csiro.au/aclep/soilandlandscapegrid/index.html), mean annual temperature from WorldClim v.2 [@fickWorldClim2017] for each georeferenced record using the "extract" function in the R package `raster` v.3.6-3 [@hijmansRaster2022]. We then calculated the species maximum soil bulk density and species mean annual temperature. 
 
@@ -147,7 +160,7 @@ All statistical analyses were performed in R. To test for evolutionary correlati
 
 Total number of vertebrae varies among the 39 species of Australo-Papuan blindsnakes in this study (Fig. \@ref(fig:fig-tree-boxplots)), ranging from 146 in *A. tovelli* to 400 in *A. grypus* (**Table S1**). 
 
-```{r fig-tree-boxplots, fig.cap= 'Interspecific variation in aspect ratio and total number of vertebrae among Australo-Papuan blindsnake and close relatives. The boxplots represent the distribution of data, with vertical inside representing the median. The extent of the box represents the lower (left) and upper (right) quartile, with the whiskers showing 1.5 times the interquartile range. Outliers beyond this range are depicted as individual points. Some species are represented by only the mean.', out.width="165mm", out.height= "92mm"}
+```{r fig-tree-boxplots, fig.cap= 'Interspecific variation in aspect ratio and total number of vertebrae among Australo-Papuan blindsnake and close relatives. The boxplots represent the distribution of data, with vertical inside representing the median. The extent of the box represents the lower (left) and upper (right) quartile, with the whiskers showing 1.5 times the interquartile range. Outliers beyond this range are depicted as individual points. Some species are represented by only the mean.', out.width="165mm", out.height= "129mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/tree-boxplots.jpg'))
 ```
@@ -177,10 +190,10 @@ knitr::include_graphics(paste0(WD, '/assets/figures/vertebral-profile.jpg'))
 
 ### Correlation between vertebrae ratio, number, and ecological variables among Australian blindsnakes
 
-We found a positive relationship between vertebrae ratio and species mean annual temperature (PGLS, slope=0.038, y=0.19, R^2^=0.21, F=9.58, Z=2.32, P=0.009), indicating species that have greater number of vertebrae for body size are generally found in places that are warmer (Fig. \@ref(fig:fig-vert-ecology)A). We also found a significant negative relationship between vertebrae ratio and species maximum soil bulk density (PGLS, slope=-1.00, y=2.52, R^2^=0.12, F=4.8, Z=1.7, P=0.043), indicating species that have greater amount of vertebrae for body size are generally found in places that have harder to penetrate soil (Fig. \@ref(fig:fig-vert-ecology)B). When considering raw mean vertebrae number, we found non-statistically significant positive correlations with both mean annual temperature (PGLS, slope=4.13, y=142.45, R^2^=0.76, F=2.87, Z=1.31, P=0.09) and maximum soil bulk density (PGLS, slope=111.69, y=, R^2^=0.04, F=1.61, Z=0.85, P=0.22; Fig. \@ref(fig:fig-vert-ecology)C–D).
+We found a positive relationship between vertebrae ratio and species mean annual temperature (PGLS, slope=0.038, y=0.19, R^2^=0.21, F=9.58, Z=2.32, P=0.009), indicating species that have greater number of vertebrae for body size are generally found in places that are warmer (Fig. \@ref(fig:fig-vert-ecology)A). We also found a significant negative relationship between vertebrae ratio and species maximum soil bulk density (PGLS, slope=-1.00, y=2.52, R^2^=0.12, F=4.8, Z=1.7, P=0.043), indicating species that have greater number of vertebrae for body size are generally found in places that have harder to penetrate soil (Fig. \@ref(fig:fig-vert-ecology)B). When considering raw mean vertebrae number, we found non-statistically significant positive correlations with both mean annual temperature (PGLS, slope=4.13, y=142.45, R^2^=0.76, F=2.87, Z=1.31, P=0.09) and maximum soil bulk density (PGLS, slope=111.69, y=, R^2^=0.04, F=1.61, Z=0.85, P=0.22; Fig. \@ref(fig:fig-vert-ecology)C–D).
 
 <!-- Fig: Ratio and ecological variables -->
-```{r fig-vert-ecology, fig.cap= 'Relationship between mean vertebrae ratios and ecological variables. (A) Mean vertebrae against species mean annual temperature. (B) Mean vertebrae ratio against species max soil bulk density. Mean vertebrae ratio is calculated by mean total vertebrae / mean total length for each species. Species mean annual temperature and max soil bulk density values are calculated based on occurrence data. Trend line represents slope from PGLS', out.width="165mm", out.height= "117mm"}
+```{r fig-vert-ecology, fig.cap= 'Relationship between mean vertebrae ratios and ecological variables. (A) Mean vertebrae against species mean annual temperature. (B) Mean vertebrae ratio against species max soil bulk density. Mean vertebrae ratio is calculated by mean total vertebrae / mean total length for each species. Species mean annual temperature and max soil bulk density values are calculated based on occurrence data. Trend lines represent slopes from PGLS', out.width="165mm", out.height= "117mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/vert-ecology.jpg'))
 ```
@@ -190,6 +203,7 @@ knitr::include_graphics(paste0(WD, '/assets/figures/vert-ecology.jpg'))
  <!-- The specific questions we addressed are: (1) How prevalent is pleomerism among blindsnakes? (2) Can deviations from pleomerism be explained by body shape in a genus of Australian blindsnakes? (3) Does vertebral ratio vary with mean annual temperature or soil compactness? -->
 
 ***[Big summary]***
+
 Results from our study revealed that that pleomerism does not apply to Australian typhlopids, indicating a deviation from the positive correlation between body size and vertebrae number reported for other terrestrial snakes and elongated vertebrates [@headDissociation2007;@lindseyPleomerism1975]. Variation in body shape, however, is underpinned by the ratio between vertebrae number to body size. We show that species that are narrow-and-long have proportionally more vertebrae compared to species that are more robust-and-wide. This relationship between the proportion of vertebrae to body shape has been found in colubrids and viperids, where more elongated species tend to have a greater number of vertebrae than stouter ones [@lindellEvolution1994]. Variation in vertebral ratio can also be explained by both mean annual temperature and soil compactness. These results have important implications for understanding the macroevolutionary dynamics of continental-scale radiation of Australian blindsnakes. 
 
 ***[Discuss why body shape might influence vertebrae ratio or vice-versa]***
