@@ -124,6 +124,17 @@ Vertebra_summary_table_by_sex <- vert_df %>%
 Vertebra_summary_table_by_sex
 
 
+## Head length x-ray
+skull_summary <- vert_df %>% 
+  dplyr::group_by(species, sex) %>% 
+  dplyr::filter(sex %in% c("f","m")) %>% 
+  summarise(sample_size = n(),
+            skull_length = mean(headlength_xray),
+            rel_skull = mean(headlength_xray/svl))
+
+write.csv(skull_summary, file = "assets/tables/skull_summary.csv", row.names = FALSE)
+
+
 
 
 # Q1 Test for sexual dimorphism ----------------------------------------------
@@ -279,10 +290,10 @@ spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
 
 # Figure 1: phylo + boxplots 
 
-pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 10, height = 7.5)
+pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 20, height = 12)
 plotTree.boxplot(sub_phy,x=aspect_v~spp,
                  args.boxplot = list(xlab="Aspect ratio (total length/body width)",
-                                     # ylim=c(20,170),
+                                     # ylim=c(0,200),
                                      col="grey99"))
 dev.off()
 
@@ -290,7 +301,7 @@ dev.off()
 vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
 vert_num <- vert_num[which(names(vert_num) %in% sub_phy$tip.label)]
 
-pdf(file = "output/tree_boxplot_totalVert.pdf", width = 10, height = 7.5)
+pdf(file = "output/tree_boxplot_totalVert.pdf", width = 10, height = 12)
 plotTree.boxplot(sub_phy,x=vert_num~spp,
                  args.boxplot = list(xlab="Total number of vertebrae",
                                      # ylim=c(20,170),
