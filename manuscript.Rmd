@@ -35,14 +35,13 @@ library(kableExtra)
 
 <!-- **Title** TBD -->
 
-**Authors**: Sarin Tiatragul^1^; Andrew Amey^2^; Scott Hocknull^2^;  Scott Keogh^1^; Emma Sherratt^3^
+**Authors**: Sarin Tiatragul^1^; Andrew Amey^2^; Scott Hocknull^2^; Scott Keogh^1^; Emma Sherratt^3^
 
 ^1^Division of Ecology & Evolution, Research School of Biology, The Australian National University, Canberra 2601, ACT, Australia 
 
-^2^Queensland Museum, Hendra, QLD, 4011, Australia
+^2^Queensland Museum, Hendra, QLD, 4011, Australia 
 
-^3^School of Biological Sciences, The University of Adelaide, Adelaide, SA 5005, Australia
-
+^3^School of Biological Sciences, The University of Adelaide, Adelaide, SA 5005, Australia 
 
 **Corresponding author**: Sarin Tiatragul (sarin.tiatragul@anu.edu.au)  
 
@@ -88,25 +87,28 @@ Keywords: Scolecophidia, vertebrae, pleomerism, snakes,
 * Elongate animals have special properties of vertebral number known as pleomerism, where body size and number of segments in vertebrae are correlated [@lindseyPleomerism1975]. 
 Pleomerism has been observed in eels and fish [@wardEvolution2007;@wardDifferential2014;@reeceEvolutionary2013;], in squamates [@pollyTesting2001;@headDissociation2007;@headEvolution2015;@bergmannVertebral2012;@lindellEvolution1994;@cernanskyVertebral2019], in salamanders and caecilians [@bonettEvidence2017;@renousBody1989;@arntzenVertebral2015]
 
-* Snakes are a good model to study axial evolution because they have a high number of vertebrae and a wide range of body shapes 
+* Snakes are a good model to study axial evolution because they have a high number of vertebrae and a wide range of body size and shape.
 * In elapid snakes [@sherrattVertebral2019;@sherrattMacroevolution2022;@hamptonInterspecific2019;@hamptonRegionalization2023]; colubrid snakes [@nash-hahnModification2024].
-
 
 ***[Specific background]***
 
-Scolecophidians comprise XXX species of snakes with highly specialised phenotypes for a strictly fossorial lifestyle [@mirallesMolecular2018;@uetzQuarter2021].
-Although all blindsnakes are fossorial, body size and shape vary significantly among species (Tiatragul et al. unpublished; @shineNatural1990;@webbPreysize1993;@webbDietary2001;@ehmannFamily1993). Leptophlopids are generally thought to be more narrow-and-long compared to typhlopids, which are generally wide-and-robust for a given body length [@herrelBurrowing2021]. These differences in body size and proportions determine how much push force the snakes can generate when burrowing. 
-Their morphological differences led to the idea that leptyphlopids generally use existing burrows while typhlopids create their own burrow. 
+Scolecophidians, often referred to in English as "blindsnakes", are characterised by their fossorial lifestyle, poor visual system, and highly specialised phenotypes adapted for a strictly fossorial existence [@mirallesMolecular2018; @strongDeconstructing2021; @gowerEyetranscriptome2021]. Scolecophidians comprise five paraphyletic families, including the "core scolecophidians" — a monophyletic clade consisting of Typhlopidae (425 spp), Leptotyphlopidae (143 spp), Gerrhopilidae (29 spp), and Xenotyphlopidae (1 spp) — and the paraphyletic Anomalepididae (20 spp), which is sister to all other "typical snakes" (Alethinophidia) [@mirallesMolecular2018; @burbrinkInterrogating2020; @uetzQuarter2021]. 
 
-Compared to other snakes, the vertebral column of fossorial snakes tends to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE). 
-
-* Other relevant specific background related to the angle of the paper
+Although all blindsnakes are fossorial, body size and shape vary significantly among species (Tiatragul et al. unpublished; @shineNatural1990;@webbPreysize1993;@webbDietary2001;@ehmannFamily1993). Leptophlopids are generally thought to be more narrow-and-long compared to typhlopids, which are generally wide-and-robust for a given body length [@herrelBurrowing2021]. These differences in body size and proportions determine how much push force the snakes can generate when burrowing. Their morphological differences led to the idea that leptyphlopids generally use existing burrows while typhlopids create their own burrow. 
 
 ***[Knowledge gap]***
 
-A big review included number of vertebrae [@szyndlarIllustrated2023] for many non-aleth
-
 The Australian blindsnake radiation comprise 47 described species [@tiatragulAustralia2023] with considerably diverse morphology from narrow-and-long (aspect ratio >= 100) to robust-and-wide (aspect ratio < 60). However, information about the relationship between body size and vertebrae number is unknown. 
+
+Among typhlopidae, gigantism have evolved multiple times but with different mechanisms [@headDissociation2007]. For instance, @headDissociation2007 found that some of the largest species of blindsnakes in the African continent (e.g. *Afrotyphlops schlegelii*) have fewer than expected precloacal vertebrae than expected for their size. This suggests that elongation in these species is achieved by elongating each vertebra rather than adding additional vertebrae. 
+
+In another predominantly burrowing clade, caecilians, the number of vertebrae is positively correlated with body size [@renousBody1989], suggesting pleomerism is a mechanism for burrowing taxa to diversity in the underground environment. 
+
+<!-- A big review included number of vertebrae [@szyndlarIllustrated2023] for many non-alethinophidian snakes, but  -->
+
+Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE).
+
+
 
 ***[What we do in this paper]***
 
@@ -204,7 +206,7 @@ knitr::include_graphics(paste0(WD, '/assets/figures/vert-ecology.jpg'))
 
 ***[Big summary]***
 
-Results from our study revealed that that pleomerism does not apply to Australian typhlopids, indicating a deviation from the positive correlation between body size and vertebrae number reported for other terrestrial snakes and elongated vertebrates [@headDissociation2007;@lindseyPleomerism1975]. Variation in body shape, however, is underpinned by the ratio between vertebrae number to body size. We show that species that are narrow-and-long have proportionally more vertebrae compared to species that are more robust-and-wide. This relationship between the proportion of vertebrae to body shape has been found in colubrids and viperids, where more elongated species tend to have a greater number of vertebrae than stouter ones [@lindellEvolution1994]. Variation in vertebral ratio can also be explained by both mean annual temperature and soil compactness. These results have important implications for understanding the macroevolutionary dynamics of continental-scale radiation of Australian blindsnakes. 
+Results from our study revealed that pleomerism does not apply to Australian typhlopids, indicating a deviation from the positive correlation between body size and vertebrae number reported for other terrestrial snakes and elongated vertebrates [@headDissociation2007;@lindseyPleomerism1975]. Variation in body shape, however, is underpinned by the ratio between vertebrae number to body size. We show that species that are narrow-and-long have proportionally more vertebrae compared to species that are more robust-and-wide. This relationship between the proportion of vertebrae to body shape has been found in colubrids and viperids, where more elongated species tend to have a greater number of vertebrae than stouter ones [@lindellEvolution1994]. Variation in vertebral ratio can also be explained by both mean annual temperature and soil compactness. These results have important implications for understanding the macroevolutionary dynamics of continental-scale radiation of Australian blindsnakes. 
 
 ***[Discuss why body shape might influence vertebrae ratio or vice-versa]***
 
