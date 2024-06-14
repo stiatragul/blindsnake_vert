@@ -285,17 +285,31 @@ aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
 geiger::name.check(phy = sub_phy, data = aspect_v)
 spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
 
+## Statistics about aspect ratio
+summary(aspect_v)
+aspect_v[(which.min(aspect_v))]
+aspect_v[(which.max(aspect_v))]
+
+
+table_s2 <- vert_df %>% 
+  dplyr::group_by(species) %>% 
+  dplyr::summarise(mean_aspect = mean(total_length/midbody_diameter),
+                   max_aspect = max(total_length/midbody_diameter),
+                   min_aspect = min(total_length/midbody_diameter),
+                   sample_n = n()) 
+
+write.csv(table_s2, file = "assets/tables/aspect_ratios_summary", row.names = F)
 
 ## This is using old code where we can't adjust the ylim
 
 # Figure 1: phylo + boxplots 
 
-pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 20, height = 12)
+# pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 20, height = 12)
 plotTree.boxplot(sub_phy,x=aspect_v~spp,
                  args.boxplot = list(xlab="Aspect ratio (total length/body width)",
                                      # ylim=c(0,200),
                                      col="grey99"))
-dev.off()
+# dev.off()
 
 # Fig vertebrae number boxplot
 vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
@@ -406,13 +420,28 @@ sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species
 
 # Log max body length against log max number of vertebrae
 
-pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
-plot(max_tbl~max_vert, bty="n", pch = 19,
-     ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
+# pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
+
+anilios_tree
+anilios_vert[,c("max_total_vert", "max_tbl")]
+
+phylomorphospace(anilios_tree,anilios_vert[,c("max_total_vert", "max_tbl")], 
+                 bty="n", label="horizontal", 
+                 ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
+
+# plot(max_tbl~max_vert, bty="n", pch = 19,
+     # ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
      # xlim=c(150,400), ylim=c(100,700))
-text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+# text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+
+outgroup_labs <- gsub(pattern = "Anilios_", replacement = "", x = vert_data$species)
+points(y = vert_data$max_tbl, x = vert_data$max_total_vert, labels = sp_labs, pos = 1, cex = 0.7)
+
+
 abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
-dev.off()
+
+
+# dev.off()
 ## Including Head & Polly 2007 typhlopid data
 # typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
 # typh_data
