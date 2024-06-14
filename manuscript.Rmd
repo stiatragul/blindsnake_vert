@@ -108,8 +108,6 @@ In another predominantly burrowing clade, caecilians, the number of vertebrae is
 
 Compared to other snakes, the vertebral column of fossorial snakes tend to feature a much higher proportion of pre- than post-cloacal segments [@pollyTesting2001]. This is reflected in the relatively short tails of blindsnakes (CITE).
 
-
-
 ***[What we do in this paper]***
 
 In this study, we investigate the prevalence of pleomerism among Australian blindsnakes and test hypotheses that deviations from pleomerism may be explained by different body shapes or other ecological factors among Australian typhlopid snakes. The specific questions we addressed are: (1) How prevalent is pleomerism among Australian blindsnakes? (2) Can deviations from pleomerism be explained by body shape in a genus of Australian blindsnakes? (3) Does vertebral ratio vary with soil compactness or mean annual temperature?
@@ -124,7 +122,7 @@ In this study, we investigate the prevalence of pleomerism among Australian blin
 
 ## Sampling
 
-We examined 341 specimens representing 44 lineages *Anilios* blindsnakes including 42/47 formally described species [@uetzQuarter2021]. Our sample size per species ranged from 1 to 25 specimens (median=7 specimens). We sourced specimens from South Australian Museum (SAMA), Western Australian Museum (WAM), Queensland Museum (QM), Museum and Art Gallery of the Northern Territory (MAGNT), and a private collection. Where possible, we chose relatively large non-fragile specimens from both males and females with well-preserved heads for X-ray. Sex for each specimen were determined by inspecting the gonads or assigned based on relative tail lengths following (Tiatragul et al. unpublished). 
+We examined 341 specimens representing 44 lineages *Anilios* blindsnakes including 42/47 formally described species [@uetzQuarter2021]. We additionally included two close relatives, *Ramphotyphlops multilineatus* and *Acutotyphlops subocularis* [@tiatragulAustralia2023]. Our sample size per species ranged from 1 to 25 specimens (median=7 specimens). We sourced specimens from South Australian Museum (SAMA), Western Australian Museum (WAM), Queensland Museum (QM), Museum and Art Gallery of the Northern Territory (MAGNT), and a private collection. Where possible, we chose relatively large non-fragile specimens from both males and females with well-preserved heads for X-ray. Sex for each specimen were determined by inspecting the gonads or assigned based on relative tail lengths following Tiatragul et al. (unpublished). 
 
 ## Phylogeny
 
@@ -139,38 +137,42 @@ To obtain vertebral counts, we X-ray scanned the specimens at various institutio
 
 <!-- Resolution for ANU CTLab is calculated by lenth / pixel * 1000 -->
 
-We used the Fiji distribution of ImageJ2 [@schindelinFiji2012] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Pre- and post-cloacal vertebrae were distinguished based on vertebral morphology [@szyndlarIllustrated2023]. Additionally, we quantified intracolumnar length of each vertebra for three species representing narrow-and-wide phenotypes *A. grypus*, wide-and-robust phenotypes (*A. pinguis*), and intermediate phenotypes (*A. centralis*). Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 to place landmarks medially along the vertebral column at the anterior limit of the centrum of each vertebra. We then calculated the inter-landmark distances by applying the Pythagorean theorem between sequential landmark coordinates in R v.4.3.1 [@rcoreteamLanguage2023]. Measurements were repeated three times to account for measurement errors. 
+We used the Fiji distribution of ImageJ2 v.1.54j [@schindelinFiji2012;@ruedenImageJ22017] to digitally visualise X-ray images and counted the number of vertebrae using Cell Counter module. Pre- and post-cloacal vertebrae were distinguished based on vertebral morphology [@szyndlarIllustrated2023]. We calculated vertebrae ratio by dividing the total number of vertebrae by total body length.
+
+Additionally, we quantified intracolumnar length of each vertebra for three species representing 1) narrow-and-wide phenotypes (*A. grypus*), 2) wide-and-robust phenotypes (*A. pinguis*), and 3) intermediate phenotypes (*A. centralis*). Following @sherrattMacroevolution2022 we used the 'multipoint tool' in ImageJ2 to place landmarks medially along the vertebral column at the anterior limit of the centrum of each vertebra. We then calculated the inter-landmark distances by applying the Pythagorean theorem between sequential landmark coordinates in R Statistical Environment v.4.3.1 [@rcoreteamLanguage2023]. Measurements were repeated three times to account for measurement errors. 
 
 
 ## Environmental data 
 <!-- NEED TO PUT IN THE CORRECT VALUES HERE -->
 
-We used the Australian blindsnake occurrence records presented in (Tiatragul et al. unpublished) including a total of 3898 verified records (min=1, median=23, mean=81, max=525 per species). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA).
+We used the Australian blindsnake occurrence records presented in Tiatragul et al. (unpublished) including a total of 3898 verified records (min=1, median=23, mean=81, max=525 per species). These records were compiled from museum databases and verified human observations from Atlas of the Living Australia (ALA).
 
 We selected soil bulk density and annual mean temperature, as we are interested in the potential effects these may have on the distribution of species. Soil bulk density measures the penetrability of soil, which is a proxy for the type of microhabitat species is most likely living in as they are all strictly fossorial. Bulk density values > 1.6 g/cm<sup>3</sup> indicate soil that restrict penetration by plant roots, while values <0.5 indicate looser, more organic soil [@mckenzieSoil2002]. Mean annual temperature is a climate proxy and is commonly used to describe niche for squamate reptiles [@coxEvolutionary2015;@pieEvolution2017;@wiensDiversity2013]. 
 
-From raster files that contained modelled approximations at the resolution of 3 arc-seconds, we extracted soil bulk density values between 0 — 5cm depth from [CSIRO Soil and Landscape Grid of Australia](https://www.clw.csiro.au/aclep/soilandlandscapegrid/index.html), mean annual temperature from WorldClim v.2 [@fickWorldClim2017] for each georeferenced record using the "extract" function in the R package `raster` v.3.6-3 [@hijmansRaster2022]. We then calculated the species maximum soil bulk density and species mean annual temperature. 
+From raster files that contained modelled approximations at the resolution of 3 arc-seconds, we extracted soil bulk density values between 0 — 5cm depth from [CSIRO Soil and Landscape Grid of Australia](https://www.clw.csiro.au/aclep/soilandlandscapegrid/index.html), mean annual temperature from WorldClim v.2 [@fickWorldClim2017] for each georeferenced record using the "extract" function in the R package *`raster`* v.3.6-3 [@hijmansRaster2022]. We then calculated the species maximum soil bulk density and species mean annual temperature. 
 
 ## Statistical analyses
 
-All statistical analyses were performed in R. To test for evolutionary correlations between the number of vertebrae and body size and proportions, we used phylogenetic generalised least squares (PGLS) regression under a model of Brownian Motion implemented in `geomorph` v.4.0.6 [@adamsGeomorph2023]. First, we tested for pleomerism [@lindseyPleomerism1975] across 37 species of *Anilios* blindsnakes. We did this by testing whether the total number of vertebrae positively correlate with body size when regressing the maximum number of total vertebrae against maximum total body length from Tiatragul et al. (unpublished). Next, we test whether the vertebrae to body length ratio is related to the mean vertebrae number and mean aspect ratio, defined by total body length / body width, also from Tiatragul et al. (unpublished) data. Finally, we tested if variation in vertebral ratio and vertebrae number can be explained by mean annual temperature and soil compactness.
+All statistical analyses were performed in R Statistical Environment. To test for evolutionary correlations between the number of vertebrae and body size and proportions, we used phylogenetic generalised least squares (PGLS) regression under a model of Brownian Motion implemented in the R package *`geomorph`* v.4.0.6 [@adamsGeomorph2023]. First, we tested for pleomerism [@lindseyPleomerism1975] across 37 species of *Anilios* blindsnakes. We did this by testing whether the total number of vertebrae positively correlate with body size when regressing the maximum number of total vertebrae against maximum total body length from Tiatragul et al. (unpublished). Next, we test whether the vertebrae to body length ratio is related to the mean vertebrae number and mean aspect ratio, defined by total body length / body width, also from Tiatragul et al. (unpublished) data. Finally, we tested if variation in vertebrae ratio and vertebrae number can be explained by mean annual temperature and soil compactness. In all PGLS analyses, statistical significance was assessed by permutation, using 1000 iterations. 
+
+To visualise the relationship between vertebrae number and intracolumnar vertebral length, for each of the representative species, we plotted the mean vertebrae size (from three repeated measurements) against the vertebra number. Each vertebrae profile was overlaid with a fitted 4° polynomial curve. 
 
 
 # Results
 
 ### Prevalence of pleomerism among blindsnakes
 
-Total number of vertebrae varies among the 39 species of Australo-Papuan blindsnakes in this study (Fig. \@ref(fig:fig-tree-boxplots)), ranging from 146 in *A. tovelli* to 400 in *A. grypus* (**Table S1**). 
+Total number of vertebrae varies among the 39 species of Australo-Papuan blindsnakes in this study (Fig. \@ref(fig:fig-tree-boxplots)), ranging from 146 in *A. tovelli* to 400 in *A. grypus* (**Table S1**). Aspect ratios ranged from 20.8 in the robust-and-wide *A. pinguis* to 169.8 in the narrow-and-long *A. longissimus* (**Table S2**). 
 
 ```{r fig-tree-boxplots, fig.cap= 'Interspecific variation in aspect ratio and total number of vertebrae among Australo-Papuan blindsnake and close relatives. The boxplots represent the distribution of data, with vertical inside representing the median. The extent of the box represents the lower (left) and upper (right) quartile, with the whiskers showing 1.5 times the interquartile range. Outliers beyond this range are depicted as individual points. Some species are represented by only the mean.', out.width="165mm", out.height= "129mm"}
 
 knitr::include_graphics(paste0(WD, '/assets/figures/tree-boxplots.jpg'))
 ```
 
-For the Australian blindsnakes, we found a weakly positive but non-statistically significant relationship between maximum number of total vertebrae and maximum SVL (PGLS, slope=0.28, y=256, R^2^=0.02, F=0.74, Z=0.30, P=0.41), indicating an absence of pleomerism in Australian blindsnakes (Fig. \@ref(fig:fig-tbl-vert)). This suggests that maximum length is achieved by elongating each vertebra rather than by adding additional vertebrae.
+For the Australian blindsnakes, we found a weakly positive but non-statistically significant relationship between maximum number of total vertebrae and maximum SVL (PGLS, slope=0.28, intercept=256, R^2^=0.02, F=0.74, Z=0.30, P=0.41), indicating an absence of pleomerism in Australian blindsnakes (Fig. \@ref(fig:fig-tbl-vert)). This suggests that maximum length is achieved by elongating each vertebra rather than by adding additional vertebrae, while most species have many more vertebrae than expected for their size. For example, *A. grypus* "West" is an intermediate length (relative to other species) and has the most vertebrae, while *A. torresianus*, which is the longest, has relatively few vertebrae. 
 
 ### Relationship between vertebrae ratio, number, and body shape
-However, we found that vertebrae ratio is positively correlated with aspect ratio (PGLS, slope=-0.0048, y=0.73, R^2^=0.17, F=7.09, Z=2.20, P=0.011), indicating that species that are more narrow-and-long usually have greater total vertebrae to total length ratios than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-aspect-ratios) and \@ref(fig:fig-vertebral-profile)). We also found that the mean number of vertebrae positively correlated with aspect ratio (PGLS, slope=-1.8, y=120.95, R^2^=0.69, F=79.39, Z=5.30, P<0.001).
+We found that vertebrae ratio is positively correlated with aspect ratio (PGLS, slope=-0.0048, intercept=0.73, R^2^=0.17, F=7.09, Z=2.20, P=0.011), indicating that species that are more narrow-and-long usually have relatively more vertebrae for their length than species that are wide-and-robust (Fig. \@ref(fig:fig-vert-aspect-ratios) and \@ref(fig:fig-vertebral-profile)). We also found that the mean number of vertebrae positively correlated with aspect ratio (PGLS, slope=-1.8, intercept=120.95, R^2^=0.69, F=79.39, Z=5.30, P<0.001).
 
 <!-- Fig. Vertebral counts vs max body length  -->
 ```{r fig-tbl-vert, fig.cap= 'Maximum vertebral counts plotted against maximum total body length for Australian typhlopids. Trend line represent PGLS regression for Australian species.', out.width="165mm", out.height= "124mm"}
