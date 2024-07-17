@@ -7,12 +7,8 @@
 # libraries ---------------------------------------------------------------
 # Load packages with two lines
 
-library(ggplot2)
-library(dplyr)
-library(phytools); 
-library(geiger);
-library(ape); 
-library(geomorph); 
+library(ggplot2); library(dplyr); library(phytools); 
+library(geiger); library(ape); library(geomorph); 
 # library(geiger)
 # library(R.utils)
 library(phylolm)
@@ -272,6 +268,7 @@ slice_df$aspect <- slice_df$total_length/slice_df$midbody_diameter
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
 check_data <- geiger::name.check(phy = sub_phy, data = vert_data)
+vert_data_full <- vert_data
 vert_data <- vert_data[which(rownames(vert_data) %notin% check_data$data_not_tree),]
 
 plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)), 
@@ -412,41 +409,43 @@ max_vert <- anilios_data$max_vert; names(max_vert) <- anilios_data$species
 max_svl <- anilios_data$max_svl; names(max_svl) <- anilios_data$species
 max_tbl <- setNames(anilios_vert$max_tbl, anilios_vert$species)
 
+colnames(anilios_data)
+colnames(vert_data_full)
+
+### Data for species not in the phylogeny
+not_tree_data <- vert_data_full[which(rownames(vert_data_full) %notin% c(anilios_tree$tip.label, "Anilios_sp")),]
+not_tree_labs <- gsub(pattern = "Anilios_", replacement = "", x = not_tree_data$species)
+
+
+## Test pleomerism for species in tree
 pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
 summary(pleomerism.pgls)
 coefficients(pleomerism.pgls)
-
 sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species)
 
+
+### PLOTTING
 # Log max body length against log max number of vertebrae
 
-# pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
-
-anilios_tree
-anilios_vert[,c("max_total_vert", "max_tbl")]
 
 
+### FIGURE 2: PGLS tbl v vert number
 ### Emma suggest plotting as phylomorphospace and add species that are not on the tree overlaid
-phylomorphospace(anilios_tree,anilios_vert[,c("max_total_vert", "max_tbl")], 
-                 bty="n", label="horizontal", 
+
+pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
+
+phylomorphospace(anilios_tree, anilios_vert[,c("max_total_vert", "max_tbl")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
                  ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
-
-# plot(max_tbl~max_vert, bty="n", pch = 19,
-     # ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
-     # xlim=c(150,400), ylim=c(100,700))
-# text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
-
-outgroup_labs <- gsub(pattern = "Anilios_", replacement = "", x = vert_data$species)
-
-#add species not in tree to overlay 
-
-points(y = vert_data$max_tbl, x = vert_data$max_total_vert, labels = outgroup_labs, cex = 0.7, col="blue")
-
-
+# Add slope from pgls (but this is just for species in tree)
 abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
 
+# add species not in tree to overlay text next to it
+points(y = not_tree_data$max_tbl, x = not_tree_data$max_total_vert, cex = 2, col="blue", pch = 20)
+text(y = not_tree_data$max_tbl, x = not_tree_data$max_total_vert, labels = not_tree_labs, pos = 1, cex = 0.7, col="blue")
 
-# dev.off()
+dev.off()
+
 ## Including Head & Polly 2007 typhlopid data
 # typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
 # typh_data
