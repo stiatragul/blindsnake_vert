@@ -46,16 +46,6 @@ load('data/script_generated_data/subset_mcmctree_shape.rda')
 anilios_tree <- ape::drop.tip(sub_phy, tip = c("Ramphotyphlops_multilineatus","Acutotyphlops_subocularis"))
 anilios_tree$tip.label
 
-dev.off()
-
-b_tree <- sub_phy
-b_tree$tip.label <- gsub(pattern = "Anilios_", replacement = "A. ", b_tree$tip.label)
-b_tree$tip.label <- gsub(pattern = "Acutotyphlops_", replacement = "Acu. ", b_tree$tip.label)
-b_tree$tip.label <- gsub(pattern = "Ramphotyphlops_", replacement = "R. ", b_tree$tip.label)
-
-plotTree(b_tree, ftype="i", lwd = 2, fsize=1, type = "fan")
-
-
 # Summarise linear measurement data ---------------------------------------
 
 genus_species <- paste(linear_df$genus, linear_df$species, sep = "_")
@@ -84,6 +74,13 @@ total_vertebrae <- setNames(vert_df$total_vert, nm = vert_df$species)
 total_vertebrae <- total_vertebrae[which(names(total_vertebrae) %in% sub_phy$tip.label)]
 geiger::name.check(phy = sub_phy, data = total_vertebrae)
 spp<-factor(names(total_vertebrae),untangle(ladderize(sub_phy),"read.tree")$tip.label)
+
+pdf(file = "output/tree_boxplot_totalVert.pdf", width = 11.7, height = 8.3, paper = "a4r")
+plotTree.boxplot(sub_phy,x=total_vertebrae~spp,
+                 args.boxplot = list(xlab="Total number of vertebrae",
+                                     # ylim=c(20,170),
+                                     col="grey99"))
+dev.off()
 
 summary(vert_df$total_vert)
 vert_df[order(vert_df$total_vert), c("species", "total_vert")]
@@ -123,20 +120,6 @@ Vertebra_summary_table_by_sex <- vert_df %>%
 
 Vertebra_summary_table_by_sex
 
-
-## Head length x-ray
-skull_summary <- vert_df %>% 
-  dplyr::group_by(species, sex) %>% 
-  dplyr::filter(sex %in% c("f","m")) %>% 
-  summarise(sample_size = n(),
-            skull_length = mean(headlength_xray),
-            rel_skull = mean(headlength_xray/svl))
-
-write.csv(skull_summary, file = "assets/tables/skull_summary.csv", row.names = FALSE)
-
-
-
-
 # Q1 Test for sexual dimorphism ----------------------------------------------
 
 ## Question: Which species show sexual dimorphism in vert/length ratio?
@@ -166,6 +149,7 @@ d_vert_ratio
 
 ## ANSWER: 3/14 species are sexually dimorphic in vertebrae/length ratio.
 d_vert_ratio$dimorph_sp
+
 
 postcloacal_dimorph <- sex_dimorphic_tester("postcloacal_vert ~ sex + species + sex:species", subset_dimorph)
 postcloacal_dimorph$dimorph_sp
@@ -278,6 +262,7 @@ plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)),
                  args.barplot=list(xlab="Vertebrae/Length ratio"))
 
 
+
 # Aspect ratio as boxplot
 aspect_v <- setNames(vert_df$total_length / vert_df$midbody_diameter, nm = vert_df$species)
 aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
@@ -285,42 +270,29 @@ aspect_v <- aspect_v[which(names(aspect_v) %in% sub_phy$tip.label)]
 geiger::name.check(phy = sub_phy, data = aspect_v)
 spp<-factor(names(aspect_v),untangle(ladderize(sub_phy),"read.tree")$tip.label)
 
-## Statistics about aspect ratio
-summary(aspect_v)
-aspect_v[(which.min(aspect_v))]
-aspect_v[(which.max(aspect_v))]
-
-
-table_s2 <- vert_df %>% 
-  dplyr::group_by(species) %>% 
-  dplyr::summarise(mean_aspect = mean(total_length/midbody_diameter),
-                   max_aspect = max(total_length/midbody_diameter),
-                   min_aspect = min(total_length/midbody_diameter),
-                   sample_n = n()) 
-
-write.csv(table_s2, file = "assets/tables/aspect_ratios_summary", row.names = F)
 
 ## This is using old code where we can't adjust the ylim
 
 # Figure 1: phylo + boxplots 
 
-# pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 20, height = 12)
+pdf(file = "output/tree_boxplot_aspectRatio.pdf", width = 10, height = 7.5)
 plotTree.boxplot(sub_phy,x=aspect_v~spp,
                  args.boxplot = list(xlab="Aspect ratio (total length/body width)",
-                                     # ylim=c(0,200),
+                                     # ylim=c(20,170),
                                      col="grey99"))
-# dev.off()
+dev.off()
+
 
 # Fig vertebrae number boxplot
 vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
 vert_num <- vert_num[which(names(vert_num) %in% sub_phy$tip.label)]
-
-pdf(file = "output/tree_boxplot_totalVert.pdf", width = 10, height = 12)
 plotTree.boxplot(sub_phy,x=vert_num~spp,
                  args.boxplot = list(xlab="Total number of vertebrae",
                                      # ylim=c(20,170),
                                      col="grey99"))
-dev.off()
+
+plotTree.barplot(sub_phy,setNames(vert_data$aspect, rownames(vert_data)),
+                 args.boxplot = list(xlab="Aspect ratio (total length/body width"))
 
 
 ## Answer 
@@ -353,7 +325,7 @@ anilios_data <- anilios_data[rownames(anilios_vert), ]
 anilios_data$pre_cloa <- round(anilios_vert$mean_preclo, 0)
 anilios_data$tot_vert <- anilios_vert$mean_tot_vert
 anilios_data$ver_rati <- anilios_vert$ratio
-anilios_data$width_ratio <- anilios_data$mean_width/anilios_data$svl
+anilios_data$width_ratio <- anilios_data$mean_width/anilios_data
 
 # Fit and compare what evolutionary model fit best
 fit.phylolm.ev <- function(trait, .data, .phy){
@@ -404,10 +376,8 @@ summary(sig_ver_rati)
 ## Correlation between maximum precloacal vertebrae positively correlates with body size
 
 anilios_data$max_vert <- anilios_vert$max_total_vert
-anilios_data$mean_vert <- anilios_vert$mean_tot_vert
 anilios_data$max_svl <- anilios_vert$max_svl
 
-mean_vert <- anilios_data$mean_vert; names(mean_vert) <- anilios_data$species 
 max_vert <- anilios_data$max_vert; names(max_vert) <- anilios_data$species 
 max_svl <- anilios_data$max_svl; names(max_svl) <- anilios_data$species
 max_tbl <- setNames(anilios_vert$max_tbl, anilios_vert$species)
@@ -420,33 +390,13 @@ sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species
 
 # Log max body length against log max number of vertebrae
 
-# pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
-
-anilios_tree
-anilios_vert[,c("max_total_vert", "max_tbl")]
-
-
-### Emma suggest plotting as phylomorphospace and add species that are not on the tree overlaid
-phylomorphospace(anilios_tree,anilios_vert[,c("max_total_vert", "max_tbl")], 
-                 bty="n", label="horizontal", 
-                 ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
-
-# plot(max_tbl~max_vert, bty="n", pch = 19,
-     # ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
+pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
+plot(max_tbl~max_vert, bty="n", pch = 19,
+     ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
      # xlim=c(150,400), ylim=c(100,700))
-# text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
-
-outgroup_labs <- gsub(pattern = "Anilios_", replacement = "", x = vert_data$species)
-
-#add species not in tree to overlay 
-
-points(y = vert_data$max_tbl, x = vert_data$max_total_vert, labels = outgroup_labs, cex = 0.7, col="blue")
-
-
+text(y = max_tbl, x = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
-
-
-# dev.off()
+dev.off()
 ## Including Head & Polly 2007 typhlopid data
 # typh_data <- read.csv("data/HeadPollyData/typhlopid_data.csv")
 # typh_data
@@ -480,11 +430,13 @@ hist(vert_ratio)
 
 # Vertebrae ratio against aspect ratio
 
+pdf(file = "output/vert-aspect.pdf", width = 10, height = 7.5)
 plot(vert_ratio ~ aspect_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
 text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
+dev.off()
 
 
 # Mean aspect ratio (y) against max. number of vertebrae
@@ -497,38 +449,22 @@ plot(max_vert ~ aspect_ratio, bty="n", pch = 19,
 text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
 
-
-# Mean aspect ratio (y) against mean number of vertebrae
-ratio_meanvert.pgls <- geomorph::procD.pgls(mean_vert ~ aspect_ratio, phy = anilios_tree)
-summary(ratio_meanvert.pgls)
-coefficients(ratio_meanvert.pgls)
-
-plot(mean_vert ~ aspect_ratio, bty="n", pch = 19, 
-     ylab = "Mean number of vertebrae", xlab = "Mean aspect ratio")
-text(y = mean_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(ratio_meanvert.pgls)[1], b = coefficients(ratio_meanvert.pgls)[2])
-
-
-## Combine plots
-pdf(file = "output/vert-aspect.pdf", width = 9, height = 12)
+# Combination 
+pdf(file = "output/vert-aspect.pdf", width = 11.3, height = 8.5)
 par(mfrow=c(2,1))
-plot(vert_ratio ~ aspect_ratio, bty="n",
-     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio",
-     ylim=c(0.4,1.8))
+plot(vert_ratio ~ aspect_ratio, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
+     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
 text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
-# plot(max_vert ~ aspect_ratio, pch = 19, bty="n",
-#      ylab = "Max total number of vertebrae", xlab = "Mean aspect ratio",
-#      ylim = c(110,430))
-# text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-# abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
-plot(mean_vert ~ aspect_ratio, bty="n", pch = 19, 
-     ylab = "Mean number of vertebrae", xlab = "Mean aspect ratio")
-text(y = mean_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(ratio_meanvert.pgls)[1], b = coefficients(ratio_meanvert.pgls)[2])
-
+plot(max_vert ~ aspect_ratio, bty="n", pch = 19, 
+     ylab = "Max total number of vertebrae", xlab = "Mean aspect ratio")
+text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
 dev.off()
+
+
 
 
 ## Using maximum total length individual per species
@@ -547,6 +483,8 @@ text(y=anilios_slice$vert_ratio, x=anilios_slice$aspect, labels = anilios_slice$
 abline(a = coefficients(vert_asp.pgls)[1], b = coefficients(vert_asp.pgls)[2])
 
 # plot(anilios_vert$max_total_vert ~ anilios_vert$aspect, bty = "n")
+
+
 
 
 ### Will need to change the column names and make sure this works
@@ -590,84 +528,61 @@ temp.pgls <- geomorph::procD.pgls(vert_ratio ~ annual_mean_temp, phy = anilios_t
 summary(temp.pgls)
 coefficients(temp.pgls)
 
-
 ### Using geomorph::procD.pgls 
 soil.pgls <- geomorph::procD.pgls(vert_ratio ~ bulk_density, phy = anilios_tree)
 summary(soil.pgls)
 coefficients(soil.pgls)
 
-### Mean total vertebrae
-### Using geomorph::procD.pgls 
-number_temp.pgls <- geomorph::procD.pgls(mean_vert ~ annual_mean_temp, phy = anilios_tree)
-summary(number_temp.pgls)
-coefficients(number_temp.pgls)
-
-
-number_soil.pgls <- geomorph::procD.pgls(mean_vert ~ bulk_density, phy = anilios_tree)
-summary(number_soil.pgls)
-coefficients(number_soil.pgls)
-
 # Plot results vertebrae ratio against ecological variables
 
-pdf(file = "output/vert-ecology.pdf", width = 12, height = 9)
-par(mfrow=c(2,2))
+pdf(file = "output/vert-ratio-ecology.pdf", width = 11.3, height = 8.5)
+par(mfrow=c(1,2))
 plot(vert_ratio ~ annual_mean_temp, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
-     xlab = "", ylab = "Vertebrae ratio")
+     xlab = "Mean annual temperature (°C)", ylab = "Vertebrae ratio")
 text(x = annual_mean_temp, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(temp.pgls)[1], b = coefficients(temp.pgls)[2])
 
 ## Soil
+
 plot(vert_ratio ~ bulk_density, bty="n", pch = 19,
-     xlab = "", ylab = "")
+     xlab = "Max bulk density", ylab = "Vertebrae ratio")
 text(x = bulk_density, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(soil.pgls)[1], b = coefficients(soil.pgls)[2])
-# dev.off()
-
-
-# 
-# pdf(file = "output/vert-ecology.pdf", width = 12, height = 9)
-# par(mfrow=c(1,2))
-plot(mean_vert ~ annual_mean_temp, bty="n",
-     pch = 19,
-     xlab = "Mean annual temperature (°C)", ylab = "Mean vertebrae nnumber")
-text(x = annual_mean_temp, y = mean_vert, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(number_temp.pgls)[1], b = coefficients(number_temp.pgls)[2])
-
-## Soil
-plot(mean_vert ~ bulk_density, bty="n", pch = 19,
-     xlab = expression(Max~soil~bulk~density~(g/cm^3)), ylab = "")
-text(x = bulk_density, y = mean_vert, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(number_soil.pgls)[1], b = coefficients(number_soil.pgls)[2])
 dev.off()
 
+### geomorph::procD.pgls using TOTAL NUMBER OF VERTEBRAE
+vert_temp.pgls <- geomorph::procD.pgls(max_vert ~ annual_mean_temp, phy = anilios_tree)
+summary(vert_temp.pgls)
+coefficients(vert_temp.pgls)
 
-### Against aspect ratio
+### Using geomorph::procD.pgls 
+vert_soil.pgls <- geomorph::procD.pgls(max_vert ~ bulk_density, phy = anilios_tree)
+summary(vert_soil.pgls)
+coefficients(vert_soil.pgls)
 
-# Temperature
-aspect_temp.pgls <- geomorph::procD.pgls(aspect_ratio ~ annual_mean_temp, phy = anilios_tree)
-summary(aspect_temp.pgls)
-coefficients(aspect_temp.pgls)
+# Plot results vertebrae ratio against ecological variables
 
-# Soil bulk density
-aspect_soil.pgls <- geomorph::procD.pgls(aspect_ratio ~ bulk_density, phy = anilios_tree)
-summary(aspect_soil.pgls)
-coefficients(aspect_soil.pgls)
-
+pdf(file = "output/vert-number-ecology.pdf", width = 11.3, height = 8.5)
 par(mfrow=c(1,2))
-plot(aspect_ratio ~ annual_mean_temp, bty="n",
+plot(max_vert ~ annual_mean_temp, bty="n", 
+     # cex = width_ratio_cex[names(width_ratio)], 
      pch = 19,
-     xlab = "Mean annual temperature (°C)", ylab = "Mean aspect ratio")
-text(x = annual_mean_temp, y = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(aspect_temp.pgls)[1], b = coefficients(aspect_temp.pgls)[2])
+     xlab = "Mean annual temperature (°C)", ylab = "Vertebrae ratio")
+text(x = annual_mean_temp, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(vert_temp.pgls)[1], b = coefficients(vert_temp.pgls)[2])
 
 ## Soil
-plot(aspect_ratio ~ bulk_density, bty="n", pch = 19,
-     xlab = expression(Max~soil~bulk~density~(g/cm^3)), ylab = "")
-text(x = bulk_density, y = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(aspect_soil.pgls)[1], b = coefficients(aspect_soil.pgls)[2])
+
+plot(max_vert ~ bulk_density, bty="n", pch = 19,
+     xlab = "Max bulk density", ylab = "Max number of vertebrae")
+text(x = bulk_density, y = max_vert, labels = sp_labs, pos = 1, cex = 0.7)
+abline(a = coefficients(vert_soil.pgls)[1], b = coefficients(vert_soil.pgls)[2])
 dev.off()
+
+
+
 
 
 
