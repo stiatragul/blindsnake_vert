@@ -591,7 +591,6 @@ temp.pgls <- geomorph::procD.pgls(vert_ratio ~ annual_mean_temp, phy = anilios_t
 summary(temp.pgls)
 coefficients(temp.pgls)
 
-
 ### Using geomorph::procD.pgls 
 soil.pgls <- geomorph::procD.pgls(vert_ratio ~ bulk_density, phy = anilios_tree)
 summary(soil.pgls)
@@ -603,45 +602,48 @@ number_temp.pgls <- geomorph::procD.pgls(mean_vert ~ annual_mean_temp, phy = ani
 summary(number_temp.pgls)
 coefficients(number_temp.pgls)
 
-
 number_soil.pgls <- geomorph::procD.pgls(mean_vert ~ bulk_density, phy = anilios_tree)
 summary(number_soil.pgls)
 coefficients(number_soil.pgls)
 
-# Plot results vertebrae ratio against ecological variables
-
-pdf(file = "output/vert-ecology.pdf", width = 12, height = 9)
+# Figure 4: Combined results vertebrae ratio and max total vertebrae against ecological variables
+pdf(file = "output/phylomorpho-vert-ecology.pdf", width = 12, height = 9)
 par(mfrow=c(2,2))
-plot(vert_ratio ~ annual_mean_temp, bty="n", 
-     # cex = width_ratio_cex[names(width_ratio)], 
-     pch = 19,
-     xlab = "", ylab = "Vertebrae ratio")
-text(x = annual_mean_temp, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+
+
+### VERT RATIO VS ECOLOGY
+
+## Vert ratio v Annual mean temp
+phylomorphospace(anilios_tree, anilios_data[,c("temp_mean", "ver_rati")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Vertebrae ratio", xlab = "")
 abline(a = coefficients(temp.pgls)[1], b = coefficients(temp.pgls)[2])
 
-## Soil
-plot(vert_ratio ~ bulk_density, bty="n", pch = 19,
-     xlab = "", ylab = "")
-text(x = bulk_density, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+## VERT RATIO VS Soil bulk density
+phylomorphospace(anilios_tree, anilios_data[,c("max_bulk", "ver_rati")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Vertebrae ratio", xlab = "")
 abline(a = coefficients(soil.pgls)[1], b = coefficients(soil.pgls)[2])
-# dev.off()
 
+## VERTEBRAE NUMBER VS ECOLOGY
 
-# 
-# pdf(file = "output/vert-ecology.pdf", width = 12, height = 9)
-# par(mfrow=c(1,2))
-plot(mean_vert ~ annual_mean_temp, bty="n",
-     pch = 19,
-     xlab = "Mean annual temperature (°C)", ylab = "Mean vertebrae nnumber")
-text(x = annual_mean_temp, y = mean_vert, labels = sp_labs, pos = 1, cex = 0.7)
+# Vertebrae number to anilios_data
+anilios_data$aspect <- aspect_ratio[anilios_data$species]
+
+# vert vs temperature
+phylomorphospace(anilios_tree, anilios_data[,c("temp_mean", "tot_vert")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Mean vertebrae number", xlab = "Mean annual temperature (°C)")
 abline(a = coefficients(number_temp.pgls)[1], b = coefficients(number_temp.pgls)[2])
 
-## Soil
-plot(mean_vert ~ bulk_density, bty="n", pch = 19,
-     xlab = expression(Max~soil~bulk~density~(g/cm^3)), ylab = "")
-text(x = bulk_density, y = mean_vert, labels = sp_labs, pos = 1, cex = 0.7)
+phylomorphospace(anilios_tree, anilios_data[,c("max_bulk", "tot_vert")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Mean vertebrae number", xlab = expression(Max~soil~bulk~density~(g/cm^3)))
 abline(a = coefficients(number_soil.pgls)[1], b = coefficients(number_soil.pgls)[2])
+
 dev.off()
+
+
 
 
 ### Against aspect ratio
@@ -656,7 +658,6 @@ aspect_soil.pgls <- geomorph::procD.pgls(aspect_ratio ~ bulk_density, phy = anil
 summary(aspect_soil.pgls)
 coefficients(aspect_soil.pgls)
 
-par(mfrow=c(1,2))
 plot(aspect_ratio ~ annual_mean_temp, bty="n",
      pch = 19,
      xlab = "Mean annual temperature (°C)", ylab = "Mean aspect ratio")
@@ -668,6 +669,8 @@ plot(aspect_ratio ~ bulk_density, bty="n", pch = 19,
      xlab = expression(Max~soil~bulk~density~(g/cm^3)), ylab = "")
 text(x = bulk_density, y = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(aspect_soil.pgls)[1], b = coefficients(aspect_soil.pgls)[2])
+
+
 dev.off()
 
 
