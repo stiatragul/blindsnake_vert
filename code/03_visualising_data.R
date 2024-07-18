@@ -432,7 +432,7 @@ sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species
 ### FIGURE 2: PGLS tbl v vert number
 ### Emma suggest plotting as phylomorphospace and add species that are not on the tree overlaid
 
-pdf(file = "output/tbl-vert.pdf", width = 10, height = 7.5)
+pdf(file = "output/phylomorpho-tbl-vert.pdf", width = 10, height = 7.5)
 
 phylomorphospace(anilios_tree, anilios_vert[,c("max_total_vert", "max_tbl")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
@@ -496,41 +496,43 @@ plot(max_vert ~ aspect_ratio, bty="n", pch = 19,
 text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
 
-
 # Mean aspect ratio (y) against mean number of vertebrae
 ratio_meanvert.pgls <- geomorph::procD.pgls(mean_vert ~ aspect_ratio, phy = anilios_tree)
 summary(ratio_meanvert.pgls)
 coefficients(ratio_meanvert.pgls)
 
-plot(mean_vert ~ aspect_ratio, bty="n", pch = 19, 
-     ylab = "Mean number of vertebrae", xlab = "Mean aspect ratio")
-text(y = mean_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(ratio_meanvert.pgls)[1], b = coefficients(ratio_meanvert.pgls)[2])
-
-
-## Combine plots
-pdf(file = "output/vert-aspect.pdf", width = 9, height = 12)
+### Figure 3: COMBINED Phylomorphosapce 
+pdf(file = "output/phylomorpho-vert-aspect-total.pdf", width = 9, height = 12)
 par(mfrow=c(2,1))
-plot(vert_ratio ~ aspect_ratio, bty="n",
-     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio",
-     ylim=c(0.4,1.8))
-text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
-# plot(max_vert ~ aspect_ratio, pch = 19, bty="n",
-#      ylab = "Max total number of vertebrae", xlab = "Mean aspect ratio",
-#      ylim = c(110,430))
-# text(y = max_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
-# abline(a = coefficients(ratio_maxvert.pgls)[1], b = coefficients(ratio_maxvert.pgls)[2])
-plot(mean_vert ~ aspect_ratio, bty="n", pch = 19, 
-     ylab = "Mean number of vertebrae", xlab = "Mean aspect ratio")
-text(y = mean_vert, x = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
+## Vertebrae ratio v mean aspect ratio
+phylomorphospace(anilios_tree, anilios_vert[,c("aspect", "ratio")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Mean vertebrae ratio (mm)", xlab = "Mean aspect ratio",
+                 xlim=c(0,200))
+# Add slope from pgls (but this is just for species in tree)
+abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
+# add species not in tree to overlay text next to it
+points(y = not_tree_data$ratio, x = not_tree_data$aspect, cex = 2, col="#9252FF", pch = 20)
+text(y = not_tree_data$ratio, x = not_tree_data$aspect, labels = not_tree_labs, pos = 1, cex = 0.7, col="#9252FF")
+
+## Mean number of vertebrae v mean aspect ratio
+
+phylomorphospace(anilios_tree, anilios_vert[,c("aspect", "mean_tot_vert")], 
+                 bty="n", label="horizontal", node.size=c(0.4,1.3),
+                 ylab = "Mean number of vertebrae", xlab = "Mean aspect ratio",
+                 xlim=c(0,200))
+# Add slope from pgls (but this is just for species in tree)
 abline(a = coefficients(ratio_meanvert.pgls)[1], b = coefficients(ratio_meanvert.pgls)[2])
+# add species not in tree 
+points(y = not_tree_data$mean_tot_vert, x = not_tree_data$aspect, cex = 2, col="#9252FF", pch = 20)
+text(y = not_tree_data$mean_tot_vert, x = not_tree_data$aspect, labels = not_tree_labs, pos = 1, cex = 0.7, col="#9252FF")
 
 dev.off()
 
 
-## Using maximum total length individual per species
+
+### Using maximum total length individual per species
 
 anilios_slice <- slice_df[which(slice_df$species %in% anilios_tree$tip.label),]
 
