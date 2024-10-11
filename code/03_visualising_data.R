@@ -398,7 +398,7 @@ summary(sig_ver_rati)
 
 # Question 7 --------------------------------------------------------------
 
-## Correlation between maximum precloacal vertebrae positively correlates with body size
+## Correlation between total vertebrae number positively correlates with body size
 
 anilios_data$max_vert <- anilios_vert$max_total_vert
 anilios_data$mean_vert <- anilios_vert$mean_tot_vert
