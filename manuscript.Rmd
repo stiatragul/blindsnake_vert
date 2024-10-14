@@ -60,7 +60,7 @@ ES: Conceptualisation, Methodology, Writing - reviewing and editing.
 **Acknowledgements**:
 
 We thank museum curators and collection managers from the 
-South Australian Museum, Western Australian Museum, Queensland Museum, Australian National Wildlife Collection, Museum and Art Gallery of the Northern Territory, Museums Victoria, and the Florida Museum of Natural History.
+South Australian Museum, Western Australian Museum, Queensland Museum, Australian National Wildlife Collection, Museum and Art Gallery of the Northern Territory, Museums Victoria, and the Florida Museum of Natural History. SH and AA thank Queensland X-ray for provision of imaging for Queensland Museum specimens.
 SK thanks the Australian Research Council for ongoing support. ST PhD Scholarship was supported by the Australian Government Research Training Program Scholarship at the Australian National University. 
 
 **Conflict of Interest statement**
