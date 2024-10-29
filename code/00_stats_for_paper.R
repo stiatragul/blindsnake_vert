@@ -8,6 +8,7 @@
 
 library(dplyr)
 library(phytools); 
+library(stringr)
 library(geiger);
 library(ape); 
 library(geomorph); 
@@ -48,7 +49,7 @@ linear_df$species <- genus_species
 # Filter out rows with NA or 0 values in precloacal_vert
 vert_df <- linear_df[!is.na(linear_df$precloacal_vert) & 
                        linear_df$precloacal_vert != 0 & 
-                       linear_df$genus == "Anilios" &       # only Anilios species
+                       # linear_df$genus == "Anilios" &       # only Anilios species
                        linear_df$species != "Anilios_sp",]  # excluding unknown species
 
 # Calculate total vertical length and vertical ratio
@@ -66,6 +67,11 @@ nrow(vert_df)
 # Our data is presented by this many lineages
 unique(vert_df$species)  |> length()
 
+grep(unique(vert_df$species), pattern = "Anilios") |> length()
+grep(unique(vert_df$species), pattern = "Ramphotyphlops") |> length()
+grep(unique(vert_df$species), pattern = "Acutotyphlops") |> length()
+
+
 # Our sample size per species ranged from 
 paste0("sample size ranged from ", min(table(vert_df$species)), " to ", max(table(vert_df$species)))
 
@@ -79,7 +85,21 @@ unique(vert_df$institution)
 ## Number of scans by institution
 table(vert_df$institution)
 
+## Table S1
+# List of examined specimens
+table_s1 <- vert_df %>% 
+  dplyr::select(reg_no, species, institution, sex, total_vert, svl, midbody_diameter, tail_length) %>% 
+  arrange(species)
 
+table_s1$sex <- gsub(pattern = "u", "", table_s1$sex)
+table_s1$sex <- gsub(pattern = "j", "", table_s1$sex)
+table_s1$sex <- gsub(pattern = "?", "", table_s1$sex)
+# table_s1$sex <- gsub(pattern = "m", "male", table_s1$sex)
+# table_s1$sex <- gsub(pattern = "f", "female", table_s1$sex)
+table_s1$species <- gsub(pattern = "_", " ", table_s1$species)
 
+table_s1$institution <- gsub(pattern = "SAM", "SAMA", table_s1$institution)
 
+colnames(table_s1) <- c("Registration number", "Species", "Institution", "Sex", "Total vertebrae", "SVL", "Midbody diameter", "Tail length")
 
+write.csv(x = table_s1, file = "docs/supplement/table_s1.csv", row.names = FALSE)

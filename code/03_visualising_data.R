@@ -42,7 +42,6 @@ load('data/script_generated_data/subset_mcmctree_shape.rda')
 anilios_tree <- ape::drop.tip(sub_phy, tip = c("Ramphotyphlops_multilineatus","Acutotyphlops_subocularis"))
 anilios_tree$tip.label
 
-dev.off()
 
 b_tree <- sub_phy
 b_tree$tip.label <- gsub(pattern = "Anilios_", replacement = "A. ", b_tree$tip.label)
@@ -288,14 +287,14 @@ aspect_v[(which.min(aspect_v))]
 aspect_v[(which.max(aspect_v))]
 
 
-table_s2 <- vert_df %>% 
+table_s3 <- vert_df %>% 
   dplyr::group_by(species) %>% 
   dplyr::summarise(mean_aspect = mean(total_length/midbody_diameter),
                    max_aspect = max(total_length/midbody_diameter),
                    min_aspect = min(total_length/midbody_diameter),
                    sample_n = n()) 
 
-write.csv(table_s2, file = "assets/tables/aspect_ratios_summary", row.names = F)
+write.csv(table_s3, file = "assets/tables/aspect_ratios_summary.csv", row.names = F)
 
 ## This is using old code where we can't adjust the ylim
 
@@ -422,6 +421,21 @@ pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
 summary(pleomerism.pgls)
 coefficients(pleomerism.pgls)
 sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species)
+
+
+pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
+## Physignal
+max_tbl.physig <- physignal(A = max_tbl, phy = anilios_tree, iter = 999)
+physignal.z(A = max_tbl, phy = anilios_tree, iter = 999, lambda = "all")
+max_tbl.physig
+
+max_vert.physig <- physignal(A = max_vert, phy = anilios_tree, iter = 999)
+physignal.z(A = max_vert, phy = anilios_tree, iter = 999, lambda = "all")
+
+
+
+fit_pleomerism <- phylolm(max_tbl ~ max_vert, phy = anilios_tree, model="lambda")
+summary(fit_pleomerism)
 
 
 ### PLOTTING
