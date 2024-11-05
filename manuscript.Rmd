@@ -220,8 +220,6 @@ In a related study, @tiatragulMorphological2024 found that Australian blindsnake
 
 Compared to other genera of blindsnakes, the Australo-Papuan genus *Anilios* show exceptional diversity in body size and shape [@tiatragulMorphological2024;@herrelBurrowing2021], which make them a good group to study evolution of the axial skeleton. We found a lack of pleomerism in the genus, with exceptionally large species possessing a lower number of vertebrae than expected for their body size. Our findings indicate that body size and shape evolution in this clade has been influenced by changes to development, whereby vertebral segmentation during early development is dissociated from somatic growth, likely driven by ecological adaptations. This study adds to a growing body of literature on the axial skeleton of snakes, a field that has largely been neglected.
 
-
 \newpage
-
 
 ## References
