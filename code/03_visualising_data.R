@@ -425,18 +425,25 @@ sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species
 
 pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
 ## Physignal
-max_tbl.physig <- physignal(A = max_tbl, phy = anilios_tree, iter = 999)
-physignal.z(A = max_tbl, phy = anilios_tree, iter = 999, lambda = "all")
-max_tbl.physig
+# max_tbl.physig <- physignal(A = max_tbl, phy = anilios_tree, iter = 999)
+# max_tbl.physig
+max_tbl.physigz <- physignal.z(A = max_tbl, phy = anilios_tree, iter = 999, lambda = "mean")
+summary(max_tbl.physigz)
 
-max_vert.physig <- physignal(A = max_vert, phy = anilios_tree, iter = 999)
-physignal.z(A = max_vert, phy = anilios_tree, iter = 999, lambda = "all")
-
-
+# max_vert.physig <- physignal(A = max_vert, phy = anilios_tree, iter = 999)
+max_vert.physigz <- physignal.z(A = max_vert, phy = anilios_tree, iter = 999, lambda = "mean")
+summary(max_vert.physigz)
 
 fit_pleomerism <- phylolm(max_tbl ~ max_vert, phy = anilios_tree, model="lambda")
 summary(fit_pleomerism)
 
+# Using phylosig
+phylosig_maxtbl<-phytools::phylosig(tree = anilios_tree, x = max_tbl, method = "lambda", test=TRUE)
+# phylosig_maxtbl<-phytools::phylosig(tree = anilios_tree, x = log(max_tbl), method = "lambda", test=TRUE)
+phylosig_maxtbl
+
+phylosig_maxvert<-phytools::phylosig(tree = anilios_tree, x = max_vert, method = "lambda", test=TRUE)
+phylosig_maxvert
 
 ### PLOTTING
 # Log max body length against log max number of vertebrae
