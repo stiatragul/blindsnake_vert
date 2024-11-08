@@ -637,13 +637,13 @@ par(mfrow=c(2,2))
 ## Vert ratio v Annual mean temp
 phylomorphospace(anilios_tree, anilios_data[,c("temp_mean", "ver_rati")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
-                 ylab = "Vertebrae ratio", xlab = "")
+                 ylab = "Vertebra ratio", xlab = "")
 abline(a = coefficients(temp.pgls)[1], b = coefficients(temp.pgls)[2])
 
 ## VERT RATIO VS Soil bulk density
 phylomorphospace(anilios_tree, anilios_data[,c("max_bulk", "ver_rati")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
-                 ylab = "Vertebrae ratio", xlab = "")
+                 ylab = "Vertebra ratio", xlab = "")
 abline(a = coefficients(soil.pgls)[1], b = coefficients(soil.pgls)[2])
 
 ## VERTEBRAE NUMBER VS ECOLOGY
@@ -654,12 +654,12 @@ anilios_data$aspect <- aspect_ratio[anilios_data$species]
 # vert vs temperature
 phylomorphospace(anilios_tree, anilios_data[,c("temp_mean", "tot_vert")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
-                 ylab = "Mean vertebrae number", xlab = "Mean annual temperature (°C)")
+                 ylab = "Mean vertebra number", xlab = "Mean annual temperature (°C)")
 abline(a = coefficients(number_temp.pgls)[1], b = coefficients(number_temp.pgls)[2])
 
 phylomorphospace(anilios_tree, anilios_data[,c("max_bulk", "tot_vert")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
-                 ylab = "Mean vertebrae number", xlab = expression(Max~soil~bulk~density~(g/cm^3)))
+                 ylab = "Mean vertebra number", xlab = expression(Max~soil~bulk~density~(g/cm^3)))
 abline(a = coefficients(number_soil.pgls)[1], b = coefficients(number_soil.pgls)[2])
 
 dev.off()
