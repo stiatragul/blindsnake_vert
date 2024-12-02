@@ -82,8 +82,12 @@ mean(table(vert_df$species))
 ## Institution we measured from
 unique(vert_df$institution)
 
+unique(vert_df$species)
+
+
 ## Number of scans by institution
 table(vert_df$institution)
+sum(table(vert_df$institution))
 
 ## Table S1
 # List of examined specimens
@@ -103,3 +107,6 @@ table_s1$institution <- gsub(pattern = "SAM", "SAMA", table_s1$institution)
 colnames(table_s1) <- c("Registration number", "Species", "Institution", "Sex", "Total vertebrae", "SVL", "Midbody diameter", "Tail length")
 
 write.csv(x = table_s1, file = "docs/supplement/table_s1.csv", row.names = FALSE)
+
+
+sum(table_s1$`Total vertebrae`)

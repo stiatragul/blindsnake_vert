@@ -422,8 +422,6 @@ summary(pleomerism.pgls)
 coefficients(pleomerism.pgls)
 sp_labs <- gsub(pattern = "Anilios_", replacement = "", x = anilios_data$species)
 
-
-pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
 ## Physignal
 # max_tbl.physig <- physignal(A = max_tbl, phy = anilios_tree, iter = 999)
 # max_tbl.physig
@@ -460,6 +458,7 @@ phylomorphospace(anilios_tree, anilios_vert[,c("max_total_vert", "max_tbl")],
                  ylab = "Max. total body length (mm)", xlab = "Maximum number of total vertebrae")
 # Add slope from pgls (but this is just for species in tree)
 abline(a = coefficients(pleomerism.pgls)[1], b = coefficients(pleomerism.pgls)[2])
+summary(pleomerism.pgls)[1]
 
 # add species not in tree to overlay text next to it
 points(y = not_tree_data$max_tbl, x = not_tree_data$max_total_vert, cex = 2, col="blue", pch = 20)
