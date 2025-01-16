@@ -52,9 +52,9 @@ linear_df$species <- genus_species
 # Filter out rows with NA or 0 values in precloacal_vert
 vert_df <- linear_df[!is.na(linear_df$precloacal_vert) & linear_df$precloacal_vert != 0 & linear_df$reg_no != "R152714", ]
 
-# Calculate total vertical length and vertical ratio
+# Calculate total vertebral length and vertebral ratio
 vert_df$total_vert <- vert_df$precloacal_vert + vert_df$postcloacal_vert
-vert_df$vert_ratio <- (vert_df$total_length - vert_df$headlength_xray) / vert_df$total_vert
+vert_df$vert_ratio <- vert_df$total_vert / (vert_df$total_length - vert_df$headlength_xray)
 
 plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #", ylab = "Total length (mm)", bty = "n")
 
@@ -145,7 +145,7 @@ source('code/utility/func_sexual_dimorphism_tester.R')
 d_vert_ratio <- sex_dimorphic_tester("vert_ratio ~ sex + species + sex:species", subset_dimorph)
 d_vert_ratio
 
-## ANSWER: 7/14 species are sexually dimorphic in length/vertebrae ratio.
+## ANSWER: 3/14 species are sexually dimorphic in vertebra ratio.
 d_vert_ratio$dimorph_sp
 
 postcloacal_dimorph <- sex_dimorphic_tester("postcloacal_vert ~ sex + species + sex:species", subset_dimorph)
@@ -248,7 +248,7 @@ slice_df <- vert_df %>% dplyr::group_by(species) %>%
   dplyr::slice(which.max(total_length)) %>% 
   dplyr::ungroup()
 
-slice_df$ratio <- slice_df$total_vert/ (slice_df$total_length - slice_df$headlength_xray) ### MODIFIED TO USE TOTAL LENGTH - HEAD LENGTH
+slice_df$ratio <- slice_df$total_vert /  (slice_df$total_length - slice_df$headlength_xray)  ## MODIFIED TO USE TOTAL LENGTH - HEAD LENGTH as denominator
 slice_df$aspect <- slice_df$total_length/slice_df$midbody_diameter
 
 # Calculating vertebrae number to skeleton_length ratio
@@ -259,7 +259,7 @@ vert_data_full <- vert_data
 vert_data <- vert_data[which(rownames(vert_data) %notin% check_data$data_not_tree),]
 
 plotTree.barplot(sub_phy, setNames(vert_data$ratio, rownames(vert_data)), 
-                 args.barplot=list(xlab="Axial skeleton length/number of vertebrae"))
+                 args.barplot=list(xlab="Number of vertebrae/neck-to-tail length (1/mm)"))
 
 
 # Aspect ratio as boxplot
@@ -403,7 +403,6 @@ colnames(vert_data_full)
 not_tree_data <- vert_data_full[which(rownames(vert_data_full) %notin% c(anilios_tree$tip.label, "Anilios_sp")),]
 not_tree_labs <- gsub(pattern = "Anilios_", replacement = "", x = not_tree_data$species)
 
-
 ## Test pleomerism for species in tree
 pleomerism.pgls <- geomorph::procD.pgls(max_tbl ~ max_vert, phy = anilios_tree)
 summary(pleomerism.pgls)
@@ -489,7 +488,7 @@ hist(vert_ratio)
 
 plot(vert_ratio ~ aspect_ratio, bty="n", 
      # cex = width_ratio_cex[names(width_ratio)], 
-     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebrae ratio")
+     pch = 19, xlab = "Mean aspect ratio", ylab = "Mean vertebra ratio (1/mm)")
 text(x = aspect_ratio, y = vert_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
 
@@ -510,13 +509,13 @@ summary(ratio_meanvert.pgls)
 coefficients(ratio_meanvert.pgls)
 
 ### Figure 3: COMBINED Phylomorphosapce 
-pdf(file = "output/phylomorpho-vert-aspect-total.pdf", width = 9, height = 12)
+pdf(file = "output/phylomorpho-vert-aspect-total2.pdf", width = 9, height = 12)
 par(mfrow=c(2,1))
 
 ## Vertebrae ratio v mean aspect ratio
 phylomorphospace(anilios_tree, anilios_vert[,c("aspect", "ratio")], 
                  bty="n", label="horizontal", node.size=c(0.4,1.3),
-                 ylab = "Mean vertebrae ratio (mm)", xlab = "Mean aspect ratio",
+                 ylab = "Mean vertebrae ratio (1/mm)", xlab = "Mean aspect ratio",
                  xlim=c(0,200))
 # Add slope from pgls (but this is just for species in tree)
 abline(a = coefficients(vert.pgls)[1], b = coefficients(vert.pgls)[2])
@@ -537,8 +536,6 @@ points(y = not_tree_data$mean_tot_vert, x = not_tree_data$aspect, cex = 2, col="
 text(y = not_tree_data$mean_tot_vert, x = not_tree_data$aspect, labels = not_tree_labs, pos = 1, cex = 0.7, col="#9252FF")
 
 dev.off()
-
-
 
 ### Using maximum total length individual per species
 
@@ -615,7 +612,7 @@ summary(number_soil.pgls)
 coefficients(number_soil.pgls)
 
 # Figure 4: Combined results vertebrae ratio and max total vertebrae against ecological variables
-pdf(file = "output/phylomorpho-vert-ecology.pdf", width = 12, height = 9)
+pdf(file = "output/phylomorpho-vert-ecology2.pdf", width = 12, height = 9)
 par(mfrow=c(2,2))
 
 
