@@ -1,7 +1,9 @@
-# 04_model_fitting.R
-# Sarin Tiatragul 
-# July 2022 modified Feb 2023
-# Combine phenotypic data with environment data and plot
+## METADATA ===============================================================
+## Filename: 04_model_fitting.R
+## Description: Combine phenotypic data with environment data and plot
+## July 2022 modified Feb 2023
+## Author: Sarin Tiatragul (sarin.tiatragul@anu.edu.au)
+##=======================================================================##
 
 # libraries ---------------------------------------------------------------
 # Load packages with two lines
@@ -28,7 +30,6 @@ PC_log <- read.csv('data/script_generated_data/log_body_shape_ratio_pc_all.csv')
 # Load full tree, subsetted tree, and subset 
 load('data/script_generated_data/subset_mcmctree_shape.rda')
 
-
 anilios_tree <- ape::drop.tip(sub_phy, tip = c("Ramphotyphlops_multilineatus","Acutotyphlops_subocularis"))
 
 anilios_data <- read.csv(file = 'data/script_generated_data/anilios_summary_data.csv', row.names = 1)
@@ -49,7 +50,8 @@ vert_df <- linear_df %>%
 
 plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #", ylab = "SVL", bty = "n")
 
-# No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae and others that shorten their vertebrae relative to the mean. 
+# No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae
+# and others that shorten their vertebrae relative to the mean. 
 
 # Test for sexual dimorphism ----------------------------------------------
 
@@ -87,14 +89,13 @@ ggplot(filtered_vert_df, aes(x = total_vert, y = total_length, colour = sex)) +
   xlab("Total length (mm)") +
   ylab("# of vertebrae")  
 
-
-
 library(ggtree)
 filtered_vert_df$length_by_vert <- filtered_vert_df$total_length/ filtered_vert_df$total_vert
 
 vert_data <- vert_df %>% dplyr::group_by(species) %>% 
   dplyr::summarise(mean_svl = mean(svl),
                    mean_total_length = mean(total_length),
+                   mean_axial_length = mean(total_length - headlength_xray),
                    mean_preclo = mean(precloacal_vert),
                    mean_post = mean(postcloacal_vert),
                    mean_tot_vert = mean(precloacal_vert + postcloacal_vert),
@@ -102,7 +103,6 @@ vert_data <- vert_df %>% dplyr::group_by(species) %>%
 vert_df
 vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
-vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 vert_data$ratio <- vert_data$mean_tot_vert/ vert_data$mean_total_length
 
 check_data <- name.check(phy = sub_phy, data = vert_data)
@@ -187,18 +187,12 @@ summary(fit_width_EB)
 # Using total number of vertebrae
 fit_total_vert <- phylolm(tot_vert ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
 
-
-
 summary(fit_total_vert)
-
-
-
 
 fit_total_ratio <- phylolm(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
 summary(fit_total_ratio)
 
 # Stepwise model
-
 
 fit_vert_2 <- phylolm(log(tot_vert) ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
 fit_vert_3 <- phylolm(log(tot_vert) ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
