@@ -1,19 +1,15 @@
-# 03_visualising_data.R
-# Putter Tiatragul
-# Feb 2024
-# Visualise relationship between number of vertebrae and other traits
-# 
+## METADATA ===============================================================
+## Filename: 03_visualising_data.R
+## Description: Visualise relationship between number of vertebrae and other traits. And test for correlations
+## 
+## R version: 4.4.0 for Windows
+## Author: Putter Tiatragul (sarin.tiatragul@anu.edu.au)
+##=======================================================================##
 
 # libraries ---------------------------------------------------------------
-# Load packages with two lines
-
 library(ggplot2); library(dplyr); library(phytools); 
 library(geiger); library(ape); library(geomorph); 
-# library(geiger)
-# library(R.utils)
 library(phylolm)
-# library(factoextra)
-
 '%notin%' <- Negate('%in%')
 
 # source ------------------------------------------------------------------
@@ -26,13 +22,9 @@ body_shape_df <- read.csv('data/script_generated_data/blindsnake_logbodyshape_ra
 PC_log_body_ratio_df <- read.csv('data/script_generated_data/blindsnake_sp_pc_logbodyrat.csv')
 PC_log <- read.csv('data/script_generated_data/log_body_shape_ratio_pc_all.csv')
 
-
-# Need in this script
-
 # Full individual data
 linear_df <- read.csv('data/script_generated_data/blindsnake_body_traits.csv')
 linear_df <- linear_df[linear_df$reg_no %notin% c("R.8515","R.127956"),] ### Dropped these samples because mis-id as troglodytes but in Queensland. Probably torresianus or broomi
-
 
 # Summary data
 anilios_data <- read.csv(file = 'data/script_generated_data/anilios_summary_data.csv', row.names = 1)
@@ -42,14 +34,12 @@ load('data/script_generated_data/subset_mcmctree_shape.rda')
 anilios_tree <- ape::drop.tip(sub_phy, tip = c("Ramphotyphlops_multilineatus","Acutotyphlops_subocularis"))
 anilios_tree$tip.label
 
-
 b_tree <- sub_phy
 b_tree$tip.label <- gsub(pattern = "Anilios_", replacement = "A. ", b_tree$tip.label)
 b_tree$tip.label <- gsub(pattern = "Acutotyphlops_", replacement = "Acu. ", b_tree$tip.label)
 b_tree$tip.label <- gsub(pattern = "Ramphotyphlops_", replacement = "R. ", b_tree$tip.label)
 
 plotTree(b_tree, ftype="i", lwd = 2, fsize=1, type = "fan")
-
 
 # Summarise linear measurement data ---------------------------------------
 
@@ -68,7 +58,8 @@ vert_df$vert_ratio <- vert_df$total_vert / vert_df$total_length
 
 plot(x = vert_df$total_length, y = vert_df$total_vert, xlab = "Total vertebrae #", ylab = "Total length (mm)", bty = "n")
 
-# No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae and others that shorten their vertebrae relative to the mean. 
+# No clear pattern of vertebrae and total length, indicates there may be some species that elongate their vertebrae
+# and others that shorten their vertebrae relative to the mean. 
 
 # Total number of vertebrae -----------------------------------------------
 
@@ -96,7 +87,7 @@ Vertebra_summary_table <- vert_df %>%
             median_preclo = median(precloacal_vert),
             )
 
-write.csv(Vertebra_summary_table, file = "assets/tables/vertebra_summary.csv", row.names = FALSE)
+# write.csv(Vertebra_summary_table, file = "assets/tables/vertebra_summary.csv", row.names = FALSE)
 
 Vertebra_summary_table_by_sex <- vert_df %>% 
   dplyr::group_by(species, sex) %>% 
@@ -118,7 +109,6 @@ Vertebra_summary_table_by_sex <- vert_df %>%
 
 Vertebra_summary_table_by_sex
 
-
 ## Head length x-ray
 skull_summary <- vert_df %>% 
   dplyr::group_by(species, sex) %>% 
@@ -127,13 +117,10 @@ skull_summary <- vert_df %>%
             skull_length = mean(headlength_xray),
             rel_skull = mean(headlength_xray/svl))
 
-write.csv(skull_summary, file = "assets/tables/skull_summary.csv", row.names = FALSE)
-
-
+# write.csv(skull_summary, file = "assets/tables/skull_summary.csv", row.names = FALSE)
 
 
 # Q1 Test for sexual dimorphism ----------------------------------------------
-
 ## Question: Which species show sexual dimorphism in vert/length ratio?
 
 # Make a subset of data where sex has been identified
@@ -254,7 +241,6 @@ vert_data <- as.data.frame(vert_data)
 rownames(vert_data) <- vert_data$species
 
 
-
 ### Another way is to use the data from the biggest total length individual in that species
 slice_df <- vert_df %>% dplyr::group_by(species) %>% 
   dplyr::slice(which.max(total_length)) %>% 
@@ -294,7 +280,7 @@ table_s3 <- vert_df %>%
                    min_aspect = min(total_length/midbody_diameter),
                    sample_n = n()) 
 
-write.csv(table_s3, file = "assets/tables/aspect_ratios_summary.csv", row.names = F)
+# write.csv(table_s3, file = "assets/tables/aspect_ratios_summary.csv", row.names = F)
 
 ## This is using old code where we can't adjust the ylim
 
@@ -311,7 +297,7 @@ plotTree.boxplot(sub_phy,x=aspect_v~spp,
 vert_num <- setNames(vert_df$total_vert, nm = vert_df$species)
 vert_num <- vert_num[which(names(vert_num) %in% sub_phy$tip.label)]
 
-pdf(file = "output/tree_boxplot_totalVert.pdf", width = 10, height = 12)
+# pdf(file = "output/tree_boxplot_totalVert.pdf", width = 10, height = 12)
 plotTree.boxplot(sub_phy,x=vert_num~spp,
                  args.boxplot = list(xlab="Total number of vertebrae",
                                      # ylim=c(20,170),
@@ -386,8 +372,6 @@ sig_tot_vert <- phylolm(tot_vert~1, anilios_data, anilios_tree,model="lambda")
 sig_ver_rati <- phylolm(ver_rati~1, anilios_data, anilios_tree,model="lambda")
 
 summary(sig_ver_rati)
-# anilios_data$random <- runif(nrow(anilios_data), min = 0, max = 100)
-# sig_ver_rati_random <- phylolm(random~width_ratio, anilios_data, anilios_tree,model="lambda")
 
 ## Answer
 ## Trait is evolving under a BM model. 
@@ -445,7 +429,6 @@ phylosig_maxvert
 
 ### PLOTTING
 # Log max body length against log max number of vertebrae
-
 
 
 ### FIGURE 2: PGLS tbl v vert number
@@ -665,7 +648,6 @@ dev.off()
 
 
 
-
 ### Against aspect ratio
 
 # Temperature
@@ -690,67 +672,3 @@ plot(aspect_ratio ~ bulk_density, bty="n", pch = 19,
 text(x = bulk_density, y = aspect_ratio, labels = sp_labs, pos = 1, cex = 0.7)
 abline(a = coefficients(aspect_soil.pgls)[1], b = coefficients(aspect_soil.pgls)[2])
 
-
-dev.off()
-
-
-
-
-# Total vertebrae  -- full model - no effect
-fit_phylm_total_vert <- phylolm(tot_vert ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
-summary(fit_phylm_total_vert)
-
-# Vertebrae ratio -- full model
-fit_phylm_total_ratio <- phylolm(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda")
-summary(fit_phylm_total_ratio)
-
-## There's at least an effect of temperature, but this might be because the variables might be correlated, we can try fitting it individually.
-
-# Stepwise model selection
-phylostep(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, direction = "both", k = 2)
-
-## Step wise fitting also indicate temperature provides the best fit. 
-
-fit_vrat_2 <- phylolm(ver_rati ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vrat_3 <- phylolm(ver_rati ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vrat_4 <- phylolm(ver_rati ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-fit_vrat_5 <- phylolm(ver_rati ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-
-summary(fit_vrat_2)
-summary(fit_vrat_3)
-summary(fit_vrat_4)
-summary(fit_vrat_5)
-
-# Visualise data
-dev.off()
-# par(mfrow=c(1,3))
-plot(ver_rati ~ temp_mean, data = anilios_data, bty = "n", pch = 19,
-     ylab = "Mean # of Vertebrae / total length (mm)", xlab = "Mean annual temperature (°C)")
-abline(fit_vrat_2, lty = 3)
-
-plot(ver_rati ~ mean_bulk, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
-abline(fit_vrat_3, lty = 3)
-
-plot(ver_rati ~ ARID, data = anilios_data, bty = "n", ylab = "# Vertebrae / total length (mm)")
-abline(fit_vrat_4, lty = 3)
-
-# fit_vert_2 <- phylolm(log(tot_vert) ~ temp_mean, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vert_3 <- phylolm(log(tot_vert) ~ mean_bulk, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vert_4 <- phylolm(log(tot_vert) ~ ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# fit_vert_5 <- phylolm(log(tot_vert) ~ mean_bulk + temp_mean + ARID, data = anilios_data, phy = anilios_tree, model = "lambda", boot = 500)
-# 
-# sum_vert_2 <- summary(fit_vert_2); sum_vert_3 <- summary(fit_vert_3); sum_vert_4 <- summary(fit_vert_4); sum_vert_5 <- summary(fit_vert_5)
-# 
-# sum_vert_2 
-# sum_vert_3
-# sum_vert_4
-# sum_vert_5
-
-# par(mfrow=c(2,2))
-# plot(tot_vert ~ temp_mean, data = anilios_data)
-# plot(tot_vert ~ mean_bulk, data = anilios_data)
-# plot(tot_vert ~ ARID, data = anilios_data)
-
-## Answer: vertebrae ratio correlate with temperature only, not aridity or soil compactness
-
-### PICK UP HERE### 
