@@ -75,7 +75,6 @@ grep(unique(vert_df$species), pattern = "Acutotyphlops") |> length()
 # Our sample size per species ranged from 
 paste0("sample size ranged from ", min(table(vert_df$species)), " to ", max(table(vert_df$species)))
 
-# Median | mean of species are:
 paste("median =", median(table(vert_df$species)))
 mean(table(vert_df$species))
 
